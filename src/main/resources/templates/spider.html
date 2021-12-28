@@ -3,7 +3,7 @@
 <head>
     <meta name="viewport" charset="UTF-8" content="width=device-width, initial-scale=1, shrink-to-fit=no">
 
-    <title>添加标签</title>
+    <title>爬虫配置</title>
 
     <!-- 新 Bootstrap4 核心 CSS 文件 -->
     <link rel="stylesheet" href="https://cdn.staticfile.org/twitter-bootstrap/4.3.1/css/bootstrap.min.css">
@@ -27,10 +27,8 @@
 </script>
 
 <body>
-
-
 <nav class="navbar navbar-expand-md bg-dark navbar-dark">
-    <a class="navbar-brand" href="#">&nbsp;&nbsp;&nbsp;新增标签&nbsp;&nbsp;&nbsp;</a>
+    <a class="navbar-brand" href="#">&nbsp;&nbsp;&nbsp;爬虫数据&nbsp;&nbsp;&nbsp;</a>
     <button class="navbar-toggler" type="button" data-toggle="collapse" data-target="#collapsibleNavbar">
         <span class="navbar-toggler-icon"></span>
     </button>
@@ -40,31 +38,30 @@
                 <a class="nav-link" href="/manager?lableType=1">&nbsp;&nbsp;&nbsp;标记标签&nbsp;&nbsp;&nbsp;</a>
             </li>
             <li class="nav-item">
-                <a class="nav-link active" href="/manager?lableType=2">&nbsp;&nbsp;&nbsp;新增标签&nbsp;&nbsp;&nbsp;</a>
+                <a class="nav-link" href="/manager?lableType=2">&nbsp;&nbsp;&nbsp;新增标签&nbsp;&nbsp;&nbsp;</a>
             </li>
             <li class="nav-item">
-                <a class="nav-link" href="/manager?lableType=3">&nbsp;&nbsp;&nbsp;爬虫数据&nbsp;&nbsp;&nbsp;</a>
+                <a class="nav-link active" href="/manager?lableType=3">&nbsp;&nbsp;&nbsp;爬虫数据&nbsp;&nbsp;&nbsp;</a>
             </li>
         </ul>
     </div>
 </nav>
 <br>
-
 <div class="container">
-    <form>
+    <form method="post" action="/executeSpider">
         <div class="form-group">
-            <label for="sel1">选择类型:</label>
-            <select class="form-control" id="sel1" style="width: 40%">
-                <td th:each="kidType : ${typeList}">
-                    <option th:value="${kidType.sortNum}" th:text="${kidType.divide}">1</option>
-                </td>
-            </select>
+            <label for="prefix">网址前缀:</label>
+            <input type="text" class="form-control" id="prefix" name="prefix" th:value="${spider.prefix}" style="width: 40%">
         </div>
         <div class="form-group">
-            <label for="markName">标签名称:</label>
-            <input type="text" class="form-control" id="markName" style="width: 40%">
+            <label for="dowonLoadMark">下载标识:</label>
+            <input type="text" class="form-control" name="dowonLoadMark" th:value="${spider.dowonLoadMark}" id="dowonLoadMark" style="width: 40%">
         </div>
-        <button type="button" class="btn btn-primary" th:onclick="submitMark()">Submit</button>
+        <div class="form-group">
+            <label for="num">爬取页数:</label>
+            <input type="text" class="form-control" name="num" th:value="${spider.num}" id="num" style="width: 10%">
+        </div>
+        <button type="submit" class="btn btn-primary">  SPIDER  </button>
     </form>
 </div>
 </body>

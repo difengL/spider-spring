@@ -4,10 +4,14 @@ import com.alibaba.fastjson.JSONObject;
 import com.self.spider.entities.AvType;
 import com.self.spider.entities.TitleDetail;
 import com.self.spider.entities.dto.AvTypeDto;
+import com.self.spider.scheduled.SaticScheduleTask;
+import com.self.spider.servies.c5cbca7s.manager.CinfigManager;
 import com.self.spider.servies.remote.AvMapper;
 import com.self.spider.servies.remote.TypeMapper;
+import com.sun.corba.se.spi.orbutil.threadpool.ThreadPool;
 import org.apache.commons.lang3.StringUtils;
 import org.springframework.stereotype.Controller;
+import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.servlet.ModelAndView;
 
@@ -15,6 +19,7 @@ import javax.annotation.Resource;
 import javax.servlet.http.HttpServletRequest;
 import java.util.ArrayList;
 import java.util.List;
+import java.util.concurrent.ThreadPoolExecutor;
 import java.util.stream.Collectors;
 
 /**
@@ -29,6 +34,9 @@ public class ManageController {
     private TypeMapper typeMapper;
 
     @Resource
+    private SaticScheduleTask task;
+
+    @Resource
     private AvMapper mapper;
 
     @RequestMapping("/manager")
@@ -37,13 +45,45 @@ public class ManageController {
         String lableType = request.getParameter("lableType");
         if(StringUtils.isBlank(lableType)||"1".equals(lableType)){
             mv.setViewName("redirect:/view");
-            return mv;
+        }else if("2".equals(lableType)){
+            mv.setViewName("redirect:/addType");
+        }else if("3".equals(lableType)){
+            mv.setViewName("redirect:/spider");
+        }else{
+            mv.setViewName("redirect:/list");
         }
+        return mv;
+    }
+
+    @PostMapping("executeSpider")
+    public ModelAndView executeSpider(String prefix,String dowonLoadMark,String num) {
+        CinfigManager.getInstons().setPrefix(prefix);
+        CinfigManager.getInstons().setDowonLoadMark(dowonLoadMark);
+        CinfigManager.getInstons().setNum(Integer.parseInt(num));
+        //调用线程开始执行
+        task.configureTasks();
+        ModelAndView mv = new ModelAndView();
+        mv.setViewName("redirect:/view");
+        return mv;
+    }
+
+    @RequestMapping("/spider")
+    public ModelAndView spider(HttpServletRequest request) {
+        ModelAndView mv = new ModelAndView();
+        mv.addObject("spider", CinfigManager.getInstons());
+        mv.setViewName("spider.html");
+        return mv;
+    }
+
+    @RequestMapping("/addType")
+    public ModelAndView addType(HttpServletRequest request) {
+        ModelAndView mv = new ModelAndView();
         List<AvType> typeList = typeMapper.queryAllGroupType();
         mv.addObject("typeList", typeList);
         mv.setViewName("addType.html");
         return mv;
     }
+
 
     //查询一个未修改过名称的
     @RequestMapping("/view")
