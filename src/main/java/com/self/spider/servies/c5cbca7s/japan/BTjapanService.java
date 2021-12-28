@@ -16,10 +16,7 @@ import org.jsoup.select.Elements;
 import org.springframework.stereotype.Service;
 
 import javax.annotation.Resource;
-import java.util.Arrays;
-import java.util.HashMap;
-import java.util.List;
-import java.util.Map;
+import java.util.*;
 import java.util.stream.Collectors;
 
 @Service
@@ -34,8 +31,22 @@ public class BTjapanService extends AbstractC5cbca7sService {
     public boolean detail(List<Catalogue> detailUrl){
 
         detailUrl.forEach(element -> {
-            String result = GetToolKit.get_https(element.getUrl());
-            Document document = Jsoup.parse(result);
+            String result;
+            Document document;
+            int forCount = 5;
+            for (;;){
+                result = GetToolKit.get_https(element.getUrl());
+                document = Jsoup.parse(result);
+                boolean action = StringUtils.isNotBlank(result) && Objects.nonNull(document);
+                forCount --;
+                if(action||forCount<=0){
+                    break;
+                }
+                try {
+                    Thread.sleep(200);
+                } catch (InterruptedException e) {
+                }
+            }
             //影片名称
             Map<String,String> map = new HashMap<>();
             String [] arr = document.getElementById("read_tpc").html().split("\n");
@@ -74,7 +85,7 @@ public class BTjapanService extends AbstractC5cbca7sService {
 
             System.out.println(JSONObject.toJSONString(detail));
             try {
-                TitleDetail info = mapper.queryByUrl(detail.getDowonUrl());
+                //TitleDetail info = mapper.queryByUrl(detail.getDowonUrl());
                /* if(info!=null){
                     mapper.updateInfo(detail);
                 }else{
@@ -86,7 +97,6 @@ public class BTjapanService extends AbstractC5cbca7sService {
                 failCount ++;
                 System.out.println("【保存失败】"+JSONObject.toJSONString(detail));
             }
-
 
         });
         if(failCount>=10){
