@@ -19,7 +19,7 @@
 
 
     <!--插入job-->
-    <insert id="addType" parameterType="com.self.spider.entities.TitleDetail" useGeneratedKeys="true" keyColumn="id" keyProperty="id">
+    <insert id="addInfo" parameterType="com.self.spider.entities.TitleDetail" useGeneratedKeys="true" keyColumn="id" keyProperty="id">
         insert into av_list (name,actor,subtitle,mosaic,md5,dowonUrl,img) VALUES
             (#{name},#{actor},#{subtitle},#{mosaic},#{md5},#{dowonUrl},#{img})
     </insert>
