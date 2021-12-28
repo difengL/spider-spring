@@ -13,4 +13,8 @@ public interface TypeMapper {
 
     //查询所有类型
     List<AvType> queryAllType();
+
+    List<AvType> queryAllGroupType();
+
+    void addType(AvType avtYPE);
 }
