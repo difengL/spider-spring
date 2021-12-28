@@ -1,0 +1,133 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="com.self.spider.servies.remote.AvMapper">
+
+    <resultMap type="com.self.spider.entities.TitleDetail" id="BaseResultMap">
+        <id column="id" property="id"  />
+        <result column="name" property="name" />
+        <result column="actor" property="actor"  />
+        <result column="keep_second" property="keepSecond"  />
+        <result column="subtitle" property="subtitle"  />
+        <result column="mosaic" property="mosaic"  />
+        <result column="retry" property="retry"  />
+        <result column="md5" property="md5"  />
+        <result column="dowonUrl" property="dowonUrl"  />
+        <result column="img" property="img"  />
+        <result column="audit" property="audit"  />
+        <result column="types" property="types"  />
+    </resultMap>
+
+
+    <!--插入job-->
+    <insert id="addInfo" parameterType="com.self.spider.entities.TitleDetail" useGeneratedKeys="true" keyColumn="id" keyProperty="id">
+        insert into av_list (name,actor,subtitle,mosaic,md5,dowonUrl,img) VALUES
+            (#{name},#{actor},#{subtitle},#{mosaic},#{md5},#{dowonUrl},#{img})
+    </insert>
+
+    <update id="updateInfo" parameterType="com.self.spider.entities.TitleDetail">
+        update av_list
+        <set>
+            <!--<if test="actor != null">actor=#{actor},</if>-->
+            <if test="img != null">img=#{img}</if>
+        </set>
+        where dowonUrl=#{dowonUrl}
+    </update>
+
+
+
+    <select id="queryByUrl" resultMap="BaseResultMap" >
+        SELECT * FROM av_list
+        where dowonUrl = #{dowonUrl}
+    </select>
+
+
+    <select id="queryTotalPages" resultType="java.lang.Integer"  >
+        SELECT COUNT(*) FROM av_list
+        where 1= 1
+        <if test="actor != null and actor != ''">
+            and actor like concat('%',#{actor},'%')
+        </if>
+        <if test="avName != null and avName != ''">
+            and name like concat('%',#{avName},'%')
+        </if>
+    </select>
+
+    <select id="queryAll"  resultMap="BaseResultMap">
+        select * from av_list  where 1=1
+        <if test="actor != null and actor != ''">
+            and actor like concat('%',#{actor},'%')
+        </if>
+        <if test="avName != null and avName != ''">
+            and name like concat('%',#{avName},'%')
+        </if>
+        order by id desc
+        limit #{starNum},#{pageSize}
+    </select>
+
+    <select id="queryAllActor"  resultType="java.lang.String">
+        SELECT concat('(',count(1),')',actor) from av_list GROUP BY actor
+    </select>
+
+
+    <select id="queryByUpdate" resultMap="BaseResultMap"  >
+        SELECT * FROM av_list
+        where audit = 0 order by id desc limit 1
+    </select>
+
+
+    <update id="updateActor" parameterType="com.self.spider.entities.TitleDetail">
+        update av_list
+        <set>
+            <if test="actor != null">actor=#{actor},</if>
+            <if test="types != null">types=#{types},</if>
+            <if test="img != null">img=#{img},</if>
+            audit = 1
+        </set>
+        where id=#{id}
+    </update>
+
+
+  <!--  &lt;!&ndash;根据jobId查询&ndash;&gt;
+    <select id="quertyByJobId" parameterType="LONG" resultMap="BaseResultMap">
+        select * from t_dispatch_job  where job_id = #{jobId}
+    </select>
+
+    &lt;!&ndash;更新job状态&ndash;&gt;
+    <update id="updateJobState" >
+        update t_dispatch_job
+        set job_state = #{jobState}
+        where job_id = #{jobId} and job_state &lt;= #{jobState}
+    </update>
+
+    &lt;!&ndash;更新推测执行时间&ndash;&gt;
+    <update id="updateReckonsTimeByJonId" >
+        update t_dispatch_job set reckons_time = #{reckonsTime}
+        where job_id = #{jobId}
+    </update>
+
+
+    &lt;!&ndash;更新JOB执行时间&ndash;&gt;
+    <update id="updateStarTime" >
+        update t_dispatch_job set start_time = #{starTime}
+        where job_id = #{jobId}
+    </update>
+
+    &lt;!&ndash;更新重试次数&ndash;&gt;
+    <update id="updateRetry" parameterType="LONG">
+        update t_dispatch_job set retry = retry + 1,last_apply_time = now()
+        where job_id = #{jobId}
+    </update>
+
+    <update id="updateLastApplyTime" parameterType="LONG">
+        update t_dispatch_job set last_apply_time = now()
+        where job_id = #{jobId}
+    </update>
+
+
+    &lt;!&ndash;查询准备执行任务拆分的JOB&ndash;&gt;
+    <select id="queryPrepareExcuteJob" resultMap="BaseResultMap">
+        select job_id from t_dispatch_job  where job_state = #{jobState} and start_time &lt;=  #{compareDate}
+    </select>
+-->
+
+</mapper>

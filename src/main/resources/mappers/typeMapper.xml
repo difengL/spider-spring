@@ -1,0 +1,61 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="com.self.spider.servies.remote.TypeMapper">
+
+    <resultMap type="com.self.spider.entities.AvType" id="BaseResultMap">
+        <id column="id" property="id"  />
+        <result column="typeName" property="typeName" />
+    </resultMap>
+
+
+
+    <select id="queryAllType" resultMap="BaseResultMap">
+        select * from av_type  order by sortNum
+    </select>
+
+
+
+  <!--  &lt;!&ndash;根据jobId查询&ndash;&gt;
+    <select id="quertyByJobId" parameterType="LONG" resultMap="BaseResultMap">
+        select * from t_dispatch_job  where job_id = #{jobId}
+    </select>
+
+    &lt;!&ndash;更新job状态&ndash;&gt;
+    <update id="updateJobState" >
+        update t_dispatch_job
+        set job_state = #{jobState}
+        where job_id = #{jobId} and job_state &lt;= #{jobState}
+    </update>
+
+    &lt;!&ndash;更新推测执行时间&ndash;&gt;
+    <update id="updateReckonsTimeByJonId" >
+        update t_dispatch_job set reckons_time = #{reckonsTime}
+        where job_id = #{jobId}
+    </update>
+
+
+    &lt;!&ndash;更新JOB执行时间&ndash;&gt;
+    <update id="updateStarTime" >
+        update t_dispatch_job set start_time = #{starTime}
+        where job_id = #{jobId}
+    </update>
+
+    &lt;!&ndash;更新重试次数&ndash;&gt;
+    <update id="updateRetry" parameterType="LONG">
+        update t_dispatch_job set retry = retry + 1,last_apply_time = now()
+        where job_id = #{jobId}
+    </update>
+
+    <update id="updateLastApplyTime" parameterType="LONG">
+        update t_dispatch_job set last_apply_time = now()
+        where job_id = #{jobId}
+    </update>
+
+
+    &lt;!&ndash;查询准备执行任务拆分的JOB&ndash;&gt;
+    <select id="queryPrepareExcuteJob" resultMap="BaseResultMap">
+        select job_id from t_dispatch_job  where job_state = #{jobState} and start_time &lt;=  #{compareDate}
+    </select>
+-->
+
+</mapper>
