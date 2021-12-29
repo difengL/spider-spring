@@ -1,12 +1,14 @@
 package com.self.spider.controller;
 
 import com.alibaba.fastjson.JSONObject;
+import com.self.spider.entities.AvRule;
 import com.self.spider.entities.AvType;
 import com.self.spider.entities.TitleDetail;
 import com.self.spider.entities.dto.AvTypeDto;
 import com.self.spider.scheduled.SaticScheduleTask;
 import com.self.spider.servies.c5cbca7s.manager.CinfigManager;
 import com.self.spider.servies.remote.AvMapper;
+import com.self.spider.servies.remote.RuleMapper;
 import com.self.spider.servies.remote.TypeMapper;
 import com.sun.corba.se.spi.orbutil.threadpool.ThreadPool;
 import org.apache.commons.lang3.StringUtils;
@@ -19,6 +21,7 @@ import javax.annotation.Resource;
 import javax.servlet.http.HttpServletRequest;
 import java.util.ArrayList;
 import java.util.List;
+import java.util.Objects;
 import java.util.concurrent.ThreadPoolExecutor;
 import java.util.stream.Collectors;
 
@@ -39,6 +42,9 @@ public class ManageController {
     @Resource
     private AvMapper mapper;
 
+    @Resource
+    private RuleMapper ruleMapper;
+
     @RequestMapping("/manager")
     public ModelAndView manager(HttpServletRequest request) {
         ModelAndView mv = new ModelAndView();
@@ -49,9 +55,51 @@ public class ManageController {
             mv.setViewName("redirect:/addType");
         }else if("3".equals(lableType)){
             mv.setViewName("redirect:/spider");
+        }else if("4".equals(lableType)){
+            mv.setViewName("redirect:/addRule");
         }else{
             mv.setViewName("redirect:/list");
         }
+        return mv;
+    }
+
+
+
+    @RequestMapping("/saveKeyWord")
+    public ModelAndView saveKeyWord(HttpServletRequest request) {
+        String keyWord = request.getParameter("keyWord");
+        String marks = request.getParameter("marks");
+        ModelAndView mv = new ModelAndView();
+        mv.setViewName("redirect:/view");
+        if(StringUtils.isBlank(keyWord)){
+            return mv;
+        }
+        //关键字不为空，则保存
+        ruleMapper.deleteByKeyWord(keyWord);
+        ruleMapper.addKeyWord(AvRule.builder()
+                .keyWord(keyWord)
+                .markType(marks)
+                .build());
+        return mv;
+    }
+
+    @RequestMapping("/addRule")
+    public ModelAndView addRule(HttpServletRequest request) {
+        String keyWord = request.getParameter("keyWord");
+        ModelAndView mv = new ModelAndView();
+        mv.addObject("keyWord", keyWord);
+        mv.addObject("types", formartMark());
+        mv.setViewName("addRule.html");
+        if(StringUtils.isBlank(keyWord)){
+            return mv;
+        }
+        //根据关键字查询存在的标签
+        AvRule rule = ruleMapper.queryByKeyWord(keyWord);
+        boolean action = Objects.nonNull(rule) && StringUtils.isNotBlank(rule.getMarkType());
+        if(action){
+            mv.addObject("exsistMark", rule.getMarkType());
+        }
+
         return mv;
     }
 
@@ -89,10 +137,19 @@ public class ManageController {
     @RequestMapping("/view")
     public ModelAndView listUpdate(HttpServletRequest request) {
         TitleDetail detail = mapper.queryByUpdate();
+
+
+        ModelAndView mv = new ModelAndView();
+        mv.addObject("av", detail);
+        mv.addObject("types", formartMark());
+        mv.setViewName("update.html");
+        return mv;
+    }
+
+    private List<AvTypeDto> formartMark(){
+        List<AvTypeDto> dto = new ArrayList<>();
         //拆分type
         String typeName = "";
-        List<AvTypeDto> dto = new ArrayList<>();
-
         List<AvType> other = new ArrayList<>();
         List<AvType> typeList = new ArrayList<>();
 
@@ -120,11 +177,7 @@ public class ManageController {
                 dto.get(i).getTypeList().addAll(other);
             }
         }
-        ModelAndView mv = new ModelAndView();
-        mv.addObject("av", detail);
-        mv.addObject("types", dto);
-        mv.setViewName("update.html");
-        return mv;
+        return dto;
     }
 
     @RequestMapping("/update")

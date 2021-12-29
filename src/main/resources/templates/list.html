@@ -97,7 +97,7 @@
                 <h5 class="card-title" th:text="${av.actor}"></h5>
                 <td th:each="kidType : ${typeList}">
                              <span class="badge badge-pill badge-info"
-                                   th:text="${kidType.typeName}" th:if="${#strings.indexOf(av.types+',',kidType.id+',')>-1}"></span>
+                                   th:text="${kidType.typeName}" th:if="${#strings.indexOf(','+av.types+',',','+kidType.id+',')>-1}"></span>
                 </td>
                 <p class="card-text" th:text="${av.name}"></p>
                 <a th:href="${av.dowonUrl}" class="btn btn-primary">DowonLoad</a>
