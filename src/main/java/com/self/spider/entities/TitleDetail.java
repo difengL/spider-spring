@@ -27,7 +27,7 @@ public class TitleDetail {
 
     private String types;
 
-
+    //private String tableName;
 
 
 }

@@ -17,7 +17,7 @@ public class CinfigManager {
 
     public String getPrefix() {
         if(StringUtils.isBlank(prefix)){
-            prefix = "http://q2.2112ks.link/pw/";
+            prefix = "http://k7.2112ky.com/pw/";
         }
         return prefix;
     }

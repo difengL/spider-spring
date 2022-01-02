@@ -83,14 +83,8 @@ public class BTjapanService extends AbstractC5cbca7sService {
                     .img(c5cbca7s.IMG.apply(map).trim())
                     .build();
 
-            System.out.println(JSONObject.toJSONString(detail));
+            //System.out.println(JSONObject.toJSONString(detail));
             try {
-                //TitleDetail info = mapper.queryByUrl(detail.getDowonUrl());
-               /* if(info!=null){
-                    mapper.updateInfo(detail);
-                }else{
-                    mapper.addInfo(detail);
-                }*/
                 mapper.addInfo(detail);
                 failCount = 0;
             }catch (Exception e){
@@ -104,27 +98,6 @@ public class BTjapanService extends AbstractC5cbca7sService {
         }
         failCount = 0;
         return Boolean.TRUE;
-    }
-
-    public List<Catalogue> titleList(String url){
-
-        List<Catalogue> titleUrl;
-        String result = GetToolKit.get_https(url);
-        Document document = Jsoup.parse(result);
-        Elements trList = document.getElementById("ajaxtable").getElementsByTag("tr");
-        titleUrl = trList.stream()
-                .map(element -> {
-                    Elements ele = element.select("td").eq(1).select("a").eq(1);
-                    return Catalogue.builder()
-                            .title(ele.text())
-                            .url(ele.attr("href"))
-                            .build();
-                })
-                .filter(catalogue -> StringUtils.isNotBlank(catalogue.getTitle())&&StringUtils.isNotBlank(catalogue.getUrl()))
-                .filter(catalogue -> catalogue.getUrl().contains("html_data"))
-                .map(catalogue ->  Catalogue.builder().title(catalogue.getTitle()).url(CinfigManager.getInstons().getPrefix()+ catalogue.getUrl()).build())
-                .collect(Collectors.toList());
-        return titleUrl;
     }
 
 }

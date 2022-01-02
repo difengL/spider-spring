@@ -40,6 +40,10 @@ public class ListController {
 
         String avName = request.getParameter("avName");
         String avActor = request.getParameter("avActor");
+        String movieType = request.getParameter("movieType");
+        if(StringUtils.isBlank(movieType)){
+            movieType = "1";
+        }
 
         int pageNum = Integer.parseInt(pageNumStr);
 
@@ -50,6 +54,7 @@ public class ListController {
                 .pageSize(pageSize)
                 .actor(StringUtils.isNotBlank(avActor)?avActor.substring(avActor.indexOf(")")+1):null)
                 .avName(avName)
+                .tableName("2".equals(movieType)?"av_list_china":"av_list")
                 .build();
 
         int totalSize = mapper.queryTotalPages(condition);
@@ -73,11 +78,21 @@ public class ListController {
         List<AvType> typeList = typeMapper.queryAllType();
 
 
-
+        // mapper.queryAllActor().stream().filter(item -> StringUtils.isNotBlank(item)&&item.length()<=10).collect(Collectors.toList())
         ModelAndView mv = new ModelAndView();
         mv.addObject("page", page);
-        mv.addObject("actorList", mapper.queryAllActor().stream().filter(item -> StringUtils.isNotBlank(item)&&item.length()<=10).collect(Collectors.toList()));
+        mv.addObject("actorList",new ArrayList<>());
         mv.addObject("avName", avName);
+        mv.addObject("movieType", movieType);
+        if("1".equals(movieType)){
+            mv.addObject("movieTypeName", "岛国");
+        }else if("2".equals(movieType)){
+            mv.addObject("movieTypeName", "国产");
+        }else{
+            mv.addObject("movieTypeName", "三级");
+        }
+
+
         mv.addObject("avActor", avActor);
         mv.addObject("typeList", typeList);
         mv.setViewName("list.html");

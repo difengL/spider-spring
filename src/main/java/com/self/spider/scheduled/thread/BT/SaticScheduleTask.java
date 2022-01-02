@@ -1,4 +1,4 @@
-package com.self.spider.scheduled;
+package com.self.spider.scheduled.thread.BT;
 
 import com.self.spider.entities.business.Catalogue;
 import com.self.spider.scheduled.thread.BT.WorkerThreadPool;
@@ -22,7 +22,7 @@ public class SaticScheduleTask {
 
     @Scheduled(cron = "0 0 5 * * ?")
     public void configureTasks() {
-        int num = CinfigManager.getInstons().getNum();
+       /* int num = CinfigManager.getInstons().getNum();
         WorkerThreadPool.THREADPOOL.execute(() -> {
             for (int i = 1; i <= num ; i++) {
                 String url = CinfigManager.getInstons().getPrefix() + "thread.php?fid=22&page="+i;
@@ -31,7 +31,7 @@ public class SaticScheduleTask {
                     return;
                 }
             }
-        });
+        });*/
     }
 
 

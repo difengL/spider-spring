@@ -119,9 +119,14 @@ public class c5cbca7s {
 
     public static Function<Map<String,String>,String>  IMG = map ->  {
         AtomicReference<String> imgs = new AtomicReference<>("找不到图片");
+        final int[] count = {0};
         map.forEach((k,v) ->{
+            if(count[0] >4){
+                return;
+            }
             if(k.contains(".jp")){
                 imgs.set(imgs.get()+","+Jsoup.parse(k).getElementsByTag("img").attr("src"));
+                count[0]++;
             }
         });
         return imgs.get().replace("找不到图片,","");

@@ -15,4 +15,6 @@ public class QueryAvCondition {
 
     private String avName;
 
+    private String tableName;
+
 }

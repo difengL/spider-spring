@@ -20,7 +20,7 @@
 
     <!--插入job-->
     <insert id="addInfo" parameterType="com.self.spider.entities.TitleDetail" useGeneratedKeys="true" keyColumn="id" keyProperty="id">
-        insert into av_list (name,actor,subtitle,mosaic,md5,dowonUrl,img) VALUES
+        insert into  ${tableName} (name,actor,subtitle,mosaic,md5,dowonUrl,img) VALUES
             (#{name},#{actor},#{subtitle},#{mosaic},#{md5},#{dowonUrl},#{img})
     </insert>
 
@@ -42,7 +42,7 @@
 
 
     <select id="queryTotalPages" resultType="java.lang.Integer"  >
-        SELECT COUNT(*) FROM av_list
+        SELECT COUNT(*) FROM ${tableName}
         where 1= 1
         <if test="actor != null and actor != ''">
             and actor like concat('%',#{actor},'%')
@@ -53,7 +53,7 @@
     </select>
 
     <select id="queryAll"  resultMap="BaseResultMap">
-        select * from av_list  where 1=1
+        select * from ${tableName}  where 1=1
         <if test="actor != null and actor != ''">
             and actor like concat('%',#{actor},'%')
         </if>

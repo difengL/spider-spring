@@ -1,16 +1,14 @@
 package com.self.spider.controller;
 
-import com.alibaba.fastjson.JSONObject;
 import com.self.spider.entities.AvRule;
 import com.self.spider.entities.AvType;
 import com.self.spider.entities.TitleDetail;
 import com.self.spider.entities.dto.AvTypeDto;
-import com.self.spider.scheduled.SaticScheduleTask;
+import com.self.spider.scheduled.thread.BT.SaticScheduleTask;
 import com.self.spider.servies.c5cbca7s.manager.CinfigManager;
 import com.self.spider.servies.remote.AvMapper;
 import com.self.spider.servies.remote.RuleMapper;
 import com.self.spider.servies.remote.TypeMapper;
-import com.sun.corba.se.spi.orbutil.threadpool.ThreadPool;
 import org.apache.commons.lang3.StringUtils;
 import org.springframework.stereotype.Controller;
 import org.springframework.web.bind.annotation.PostMapping;
@@ -22,8 +20,6 @@ import javax.servlet.http.HttpServletRequest;
 import java.util.ArrayList;
 import java.util.List;
 import java.util.Objects;
-import java.util.concurrent.ThreadPoolExecutor;
-import java.util.stream.Collectors;
 
 /**
  * Author:  liuyao20

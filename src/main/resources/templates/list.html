@@ -17,12 +17,24 @@
     <!-- 最新的 Bootstrap4 核心 JavaScript 文件 -->
     <script src="https://cdn.staticfile.org/twitter-bootstrap/4.3.1/js/bootstrap.min.js"></script>
 <script>
+
     function quertList(num){
         var avName = $("#avName").val();
-        window.location.href="/list?pageNum="+num+"&avName="+avName;
+        var movieType =  $("#movieType").val();
+        window.location.href="/list?pageNum="+num+"&avName="+avName+"&movieType="+movieType;
     }
     function changeSerchType(type){
-        $("#typeName").html(type);
+        if(type=='1'){
+            $("#typeName").html('岛国');
+        }else if(type=='2'){
+            $("#typeName").html('国产');
+        }else{
+            $("#typeName").html('三级');
+        }
+        $("#movieType").val(type);
+
+
+        quertList(1);
     }
     $(function (){
         //800 678
@@ -53,15 +65,15 @@
             <form>
                 <div class="input-group mt-1 mb-1">
                     <div class="input-group-prepend">
-                        <button id="typeName" type="button" class="btn btn-outline-secondary dropdown-toggle" data-toggle="dropdown">
-                            岛国
+                        <button id="typeName" type="button" th:text="${movieTypeName}" class="btn btn-outline-secondary dropdown-toggle" data-toggle="dropdown">
                         </button>
                         <div class="dropdown-menu">
-                            <a class="dropdown-item" href="javascript:changeSerchType('岛国')">岛国</a>
-                            <a class="dropdown-item" href="javascript:changeSerchType('国产')">国产</a>
-                            <a class="dropdown-item" href="javascript:changeSerchType('三级')">三级</a>
+                            <a  class="" th:class="${movieType == '1'} ? 'dropdown-item active' : 'dropdown-item' " href="javascript:changeSerchType('1')">岛国</a>
+                            <a class="" th:class="${movieType == '2'} ? 'dropdown-item active' : 'dropdown-item' " href="javascript:changeSerchType('2')">国产</a>
+                            <a class="" th:class="${movieType == '3'} ? 'dropdown-item active' : 'dropdown-item' " href="javascript:changeSerchType('3')">三级</a>
                         </div>
                     </div>
+                    <input type="hidden" id="movieType" th:value="${movieType}">
                     <input type="text" id="avName" th:value="${avName}" class="form-control" placeholder="Search">
                     <button class="btn btn-success" type="button" th:onclick="quertList('1')">&nbsp;&nbsp;&nbsp;&nbsp;Search&nbsp;&nbsp;&nbsp;&nbsp;</button>
                 </div>

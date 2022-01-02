@@ -22,7 +22,7 @@ import java.util.stream.Collectors;
 @SpringBootTest
 class SpiderSpringApplicationTests {
 
-    private static final String PREFIX = "http://q2.2112ks.link/pw/";
+    private static final String PREFIX = "http://k7.2112kw.com/pw/";
 
     @Resource
     private AvMapper mapper;
@@ -33,15 +33,16 @@ class SpiderSpringApplicationTests {
        /* TitleDetail info = mapper.queryByUrl("https://ww1.bi22t.club/torrent/393615F6C515D78A492E31731E2104F26CEBFBE1");
         System.out.println(JSONObject.toJSONString(info));*/
 
-       for (int i = 1; i < 8; i++) {
+       for (int i = 2; i < 30; i++) {
             System.out.println("当前第【"+i+"】页");
 
-            String url = "http://q2.2112ks.link/pw/thread.php?fid=22&page="+i;
+            String url = "http://k7.2112ky.com/pw/thread.php?fid=110&page="+i;
             List<Catalogue> detailUrl = null;
 
-            //detailUrl = TestDataSource.getData();
-
-            detailUrl = titleList(url);
+           detailUrl= titleList(url);
+           /* titleList(url).stream().forEach(item -> {
+                System.out.println(JSONObject.toJSONString(item));
+            });*/
 
             detail(detailUrl);
         }
@@ -99,20 +100,23 @@ class SpiderSpringApplicationTests {
                 if(actor.endsWith("[")||actor.endsWith("【"))actor = actor.substring(0,actor.length()-1);
                 TitleDetail detail = TitleDetail.builder()
                         .name(element.getTitle().trim())
-                        .actor(actor.trim())
+                        .actor("")
                         .dowonUrl(c5cbca7s.DOWONLOAD_URL.apply(map).trim())
                         .mosaic(c5cbca7s.MOSAIC.apply(map).trim())
                         .img(c5cbca7s.IMG.apply(map).trim())
+                        //.tableName("av_list_china")
                         .build();
 
                 System.out.println(JSONObject.toJSONString(detail));
-                TitleDetail info = mapper.queryByUrl(detail.getDowonUrl());
+                mapper.addInfo(detail);
+                Thread.sleep(500);
+                //TitleDetail info = mapper.queryByUrl(detail.getDowonUrl());
                /* if(info!=null){
                     mapper.updateInfo(detail);
                 }else{
                     mapper.addInfo(detail);
                 }*/
-                mapper.addInfo(detail);
+                //mapper.addInfo(detail);
 
             }catch (Exception e){
                 System.out.println("【保存失败】"+JSONObject.toJSONString(detailUrl));
@@ -132,10 +136,14 @@ class SpiderSpringApplicationTests {
         Elements trList = document.getElementById("ajaxtable").getElementsByTag("tr");
         titleUrl = trList.stream()
                 .map(element -> {
-                    Elements ele = element.select("td").eq(1).select("a").eq(1);
+                    Elements ele = element.select("td").eq(1).select("a");
+                    Elements e = ele.eq(0);
+                    if(ele.size()>1){
+                        e = ele.eq(1);
+                    }
                     return Catalogue.builder()
-                            .title(ele.text())
-                            .url(ele.attr("href"))
+                            .title(e.text())
+                            .url(e.attr("href"))
                             .build();
                 })
                 .filter(catalogue -> StringUtils.isNotBlank(catalogue.getTitle())&&StringUtils.isNotBlank(catalogue.getUrl()))
