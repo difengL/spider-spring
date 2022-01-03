@@ -47,6 +47,7 @@ public class ListController {
 
         int pageNum = Integer.parseInt(pageNumStr);
 
+        pageNum = pageNum<=0?1:pageNum;
 
         //查询数据
         QueryAvCondition condition = QueryAvCondition.builder()

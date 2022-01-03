@@ -125,7 +125,7 @@
             <a class="page-link" href="javascript:void(0)"  th:onclick="quertList('1')" >首页</a>
         </li>
         <li class="page-item" th:if="${page.hasPrevious}">
-            <a class="page-link" href="javascript:void(0)"  th:onclick="quertList('${ page.previousNum }')"  th:text="上一页"></a>
+            <a class="page-link" href="javascript:void(0)"  th:onclick="'javascript:quertList(\'' + ${page.previousNum} + '\')'"  th:text="上一页"></a>
         </li>
         <li th:each="pageNum:${#numbers.sequence(page.offsetStar, page.offsetEnd)}">
             <a class="page-link" href = "javascript:void(0)" th:onclick = "'javascript:quertList(\'' + ${pageNum} + '\')'"  th:text="${pageNum}" th:if="${pageNum ne page.pageNumber}"></a>
