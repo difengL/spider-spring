@@ -15,23 +15,17 @@ import java.util.List;
 @Component
 @Configuration
 @EnableScheduling
-public class SaticScheduleTask {
+public class JapanScheduleTask {
 
     @Resource
     private BTjapanService service;
 
     @Scheduled(cron = "0 0 5 * * ?")
     public void configureTasks() {
-       /* int num = CinfigManager.getInstons().getNum();
+        int num = CinfigManager.getInstons().getNum();
         WorkerThreadPool.THREADPOOL.execute(() -> {
-            for (int i = 1; i <= num ; i++) {
-                String url = CinfigManager.getInstons().getPrefix() + "thread.php?fid=22&page="+i;
-                List<Catalogue> detailUrl = service.titleList(url);
-                if(!service.detail(detailUrl)){
-                    return;
-                }
-            }
-        });*/
+           service.spiderData(1,num);
+        });
     }
 
 

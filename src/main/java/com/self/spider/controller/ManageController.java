@@ -4,7 +4,8 @@ import com.self.spider.entities.AvRule;
 import com.self.spider.entities.AvType;
 import com.self.spider.entities.TitleDetail;
 import com.self.spider.entities.dto.AvTypeDto;
-import com.self.spider.scheduled.thread.BT.SaticScheduleTask;
+import com.self.spider.scheduled.thread.BT.ChinaScheduleTask;
+import com.self.spider.scheduled.thread.BT.JapanScheduleTask;
 import com.self.spider.servies.c5cbca7s.manager.CinfigManager;
 import com.self.spider.servies.remote.AvMapper;
 import com.self.spider.servies.remote.RuleMapper;
@@ -33,7 +34,11 @@ public class ManageController {
     private TypeMapper typeMapper;
 
     @Resource
-    private SaticScheduleTask task;
+    private JapanScheduleTask japanTask;
+
+    @Resource
+    private ChinaScheduleTask chinaTask;
+
 
     @Resource
     private AvMapper mapper;
@@ -100,14 +105,24 @@ public class ManageController {
     }
 
     @PostMapping("executeSpider")
-    public ModelAndView executeSpider(String prefix,String dowonLoadMark,String num) {
+    public ModelAndView executeSpider(String prefix,String dowonLoadMark,String num,String optradio,String moveType) {
         CinfigManager.getInstons().setPrefix(prefix);
         CinfigManager.getInstons().setDowonLoadMark(dowonLoadMark);
         CinfigManager.getInstons().setNum(Integer.parseInt(num));
-        //调用线程开始执行
-        task.configureTasks();
         ModelAndView mv = new ModelAndView();
         mv.setViewName("redirect:/view");
+        if("2".equals(optradio)){
+            return mv;
+        }
+        //判断执行的类型
+        if("1,2".equals(moveType)){
+            chinaTask.configureTasks();
+            japanTask.configureTasks();
+        }else if("1".equals(moveType)){
+            japanTask.configureTasks();
+        }else if("2".equals(moveType)){
+            chinaTask.configureTasks();
+        }
         return mv;
     }
 

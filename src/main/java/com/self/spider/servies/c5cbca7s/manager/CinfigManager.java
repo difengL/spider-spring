@@ -15,6 +15,8 @@ public class CinfigManager {
 
     private int num;
 
+    private int startNum;
+
     public String getPrefix() {
         if(StringUtils.isBlank(prefix)){
             prefix = "http://k7.2112ky.com/pw/";
@@ -46,6 +48,14 @@ public class CinfigManager {
 
     public void setNum(int num) {
         this.num = num;
+    }
+
+    public int getStartNum() {
+        return startNum;
+    }
+
+    public void setStartNum(int startNum) {
+        this.startNum = startNum;
     }
 
     private static CinfigManager config = new CinfigManager();

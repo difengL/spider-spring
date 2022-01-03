@@ -6,10 +6,8 @@
         <id column="id" property="id"  />
         <result column="name" property="name" />
         <result column="actor" property="actor"  />
-        <result column="keep_second" property="keepSecond"  />
         <result column="subtitle" property="subtitle"  />
         <result column="mosaic" property="mosaic"  />
-        <result column="retry" property="retry"  />
         <result column="md5" property="md5"  />
         <result column="dowonUrl" property="dowonUrl"  />
         <result column="img" property="img"  />

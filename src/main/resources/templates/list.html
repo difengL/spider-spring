@@ -89,7 +89,7 @@
 <div class="container" style="margin-top:80px">
     <tr th:each="av : ${page.list}">
         <div class="card rounded mx-auto bg-warning" style="width:98%;margin-top: 4px;margin-bottom: 4px;">
-            <div th:id="${av.id}"  class="carousel slide border border-white" data-ride="carousel" >
+            <div th:id="${av.id}"  class="carousel slide border border-white" data-ride="carousel"  style="overflow: auto;" >
                 <!-- 指示符 -->
                 <ul class="carousel-indicators">
                     <th:block th:each="image,imageStat : ${#strings.listSplit(av.img, ',')}">

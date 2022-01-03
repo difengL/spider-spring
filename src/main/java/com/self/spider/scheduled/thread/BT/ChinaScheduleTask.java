@@ -1,6 +1,7 @@
 package com.self.spider.scheduled.thread.BT;
 
 import com.self.spider.entities.business.Catalogue;
+import com.self.spider.servies.c5cbca7s.china.BTchinaService;
 import com.self.spider.servies.c5cbca7s.japan.BTjapanService;
 import com.self.spider.servies.c5cbca7s.manager.CinfigManager;
 import org.springframework.context.annotation.Configuration;
@@ -17,20 +18,14 @@ import java.util.List;
 public class ChinaScheduleTask {
 
     @Resource
-    private BTjapanService service;
+    private BTchinaService service;
 
     @Scheduled(cron = "0 30 5 * * ?")
     public void configureTasks() {
-       /* int num = CinfigManager.getInstons().getNum();
+        int num = CinfigManager.getInstons().getNum();
         WorkerThreadPool.THREADPOOL.execute(() -> {
-            for (int i = 1; i <= num ; i++) {
-                String url = CinfigManager.getInstons().getPrefix() + "thread.php?fid=110&page="+i;
-                List<Catalogue> detailUrl = service.titleList(url);
-                if(!service.detail(detailUrl)){
-                    return;
-                }
-            }
-        });*/
+            service.spiderData(1,num);
+        });
     }
 
 

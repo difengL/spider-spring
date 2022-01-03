@@ -5,6 +5,8 @@ import com.self.spider.constant.TestDataSource;
 import com.self.spider.entities.TitleDetail;
 import com.self.spider.entities.business.Catalogue;
 import com.self.spider.handler.c5cbca7s;
+import com.self.spider.servies.c5cbca7s.china.BTchinaService;
+import com.self.spider.servies.c5cbca7s.japan.BTjapanService;
 import com.self.spider.servies.remote.AvMapper;
 import com.self.spider.toolkits.GetToolKit;
 import org.apache.commons.lang3.StringUtils;
@@ -27,25 +29,34 @@ class SpiderSpringApplicationTests {
     @Resource
     private AvMapper mapper;
 
+
+    @Resource
+    private BTjapanService japanService;
+
+    @Resource
+    private BTchinaService chinaService;
+
     @Test
     void contextLoads() {
+
+        japanService.spiderData(3,2);
 
        /* TitleDetail info = mapper.queryByUrl("https://ww1.bi22t.club/torrent/393615F6C515D78A492E31731E2104F26CEBFBE1");
         System.out.println(JSONObject.toJSONString(info));*/
 
-       for (int i = 2; i < 30; i++) {
+      /* for (int i = 40; i < 56; i++) {
             System.out.println("当前第【"+i+"】页");
 
             String url = "http://k7.2112ky.com/pw/thread.php?fid=110&page="+i;
             List<Catalogue> detailUrl = null;
 
            detailUrl= titleList(url);
-           /* titleList(url).stream().forEach(item -> {
+           *//* titleList(url).stream().forEach(item -> {
                 System.out.println(JSONObject.toJSONString(item));
-            });*/
+            });*//*
 
             detail(detailUrl);
-        }
+        }*/
 
         /*titleList("http://k6.c5cbca7s.com/pw/thread.php?fid=110&page=1").stream().forEach(item -> {
 
@@ -104,7 +115,7 @@ class SpiderSpringApplicationTests {
                         .dowonUrl(c5cbca7s.DOWONLOAD_URL.apply(map).trim())
                         .mosaic(c5cbca7s.MOSAIC.apply(map).trim())
                         .img(c5cbca7s.IMG.apply(map).trim())
-                        //.tableName("av_list_china")
+                        .tableName("av_list_china")
                         .build();
 
                 System.out.println(JSONObject.toJSONString(detail));

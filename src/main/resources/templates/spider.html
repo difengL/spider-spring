@@ -21,7 +21,7 @@
         var sortNum = $("#sel1").val();
         var divide = $("#sel1  option:selected").text();
         var typeName = $("#markName").val();
-        window.location.href = "/addMark?sortNum="+sortNum+"&divide="+divide+"&typeName="+typeName;
+        //window.location.href = "/addMark?sortNum="+sortNum+"&divide="+divide+"&typeName="+typeName;
     }
 
 </script>
@@ -52,6 +52,32 @@
 <br>
 <div class="container">
     <form method="post" action="/executeSpider">
+        <div class="form-group">
+            <label for="prefix">爬取类型:</label>
+            <div class="form-check form-check-inline">
+                <label class="form-check-label">
+                    <input type="checkbox" name="moveType" class="form-check-input" checked value="1">岛国
+                </label>
+            </div>
+            <div class="form-check form-check-inline">
+                <label class="form-check-label">
+                    <input type="checkbox" name="moveType" class="form-check-input" checked value="2">国产
+                </label>
+            </div>
+            <div class="form-check form-check-inline disabled">
+                <label class="form-check-label">
+                    <input type="checkbox" name="moveType" class="form-check-input" value="3" disabled>三级
+                </label>
+            </div>
+        </div>
+
+
+        <div class="form-group">
+            <label for="prefix">操作类型:</label>
+            <label class="radio-inline"><input type="radio" checked name="optradio" value="1">保存并爬取</label>
+            <label class="radio-inline"><input type="radio" name="optradio" value="2">仅保存</label>
+        </div>
+
         <div class="form-group">
             <label for="prefix">网址前缀:</label>
             <input type="text" class="form-control" id="prefix" name="prefix" th:value="${spider.prefix}" style="width: 80%">
