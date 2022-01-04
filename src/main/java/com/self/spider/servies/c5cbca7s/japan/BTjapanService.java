@@ -22,22 +22,13 @@ import java.util.stream.Collectors;
 @Service
 public class BTjapanService extends AbstractC5cbca7sService {
 
-
     @Resource
     private AvMapper mapper;
 
-
-
-    public void spiderData(int startNum,int num){
-        for (int i = startNum; i < startNum+num ; i++) {
-            String url = CinfigManager.getInstons().getPrefix() + "thread.php?fid=22&page="+i;
-            List<Catalogue> detailUrl = titleList(url);
-            if(!detail(detailUrl)){
-                return;
-            }
-        }
+    @Override
+    public String getTableUrl(){
+        return CinfigManager.getInstons().getPrefix() + "thread.php?fid=22";
     }
-
 
     @Override
     protected void saveData(TitleDetail detail) throws Exception {

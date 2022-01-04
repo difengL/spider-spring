@@ -3,6 +3,7 @@ package com.self.spider.servies.c5cbca7s;
 
 import com.alibaba.fastjson.JSONObject;
 import com.github.houbb.opencc4j.util.ZhConverterUtil;
+import com.self.spider.constant.SpiderConfig;
 import com.self.spider.entities.TitleDetail;
 import com.self.spider.entities.business.Catalogue;
 import com.self.spider.handler.c5cbca7s;
@@ -14,12 +15,33 @@ import org.jsoup.nodes.Document;
 import org.jsoup.select.Elements;
 
 import java.util.*;
+import java.util.concurrent.atomic.AtomicInteger;
 import java.util.stream.Collectors;
 
 public abstract class AbstractC5cbca7sService {
 
 
-    public List<Catalogue> titleList(String url){
+    /**
+     * 循环目录页
+     */
+    public void spiderData(int startNum,int num){
+        for (int i = startNum; i < startNum+num ; i++) {
+            System.out.println(String.format("第【%s】页",i));
+            String url = getTableUrl() + "&page="+i;
+            List<Catalogue> detailUrl = titleList(url);
+            if(!detail(detailUrl)){
+                System.out.println(String.format("连续保存失败达到【%s】次，终止爬虫。",SpiderConfig.FAIL_LIMIT_COUNT));
+                break;
+            }
+        }
+    }
+
+    protected abstract String getTableUrl();
+
+    /**
+     * 根据url获取目录页列表
+     */
+    protected List<Catalogue> titleList(String url){
 
         List<Catalogue> titleUrl;
         String result = GetToolKit.get_https(url);
@@ -46,14 +68,15 @@ public abstract class AbstractC5cbca7sService {
 
 
 
-    private static volatile int failCount = 0;
 
-    public boolean detail(List<Catalogue> detailUrl){
-
+    protected boolean detail(List<Catalogue> detailUrl){
+        //统计连续失败的次数
+        AtomicInteger failCount = new AtomicInteger();
         detailUrl.forEach(element -> {
             String result;
             Document document;
             int forCount = 5;
+            //如果一次发送https失败，则重试5次
             for (;;){
                 result = GetToolKit.get_https(element.getUrl());
                 document = Jsoup.parse(result);
@@ -102,23 +125,19 @@ public abstract class AbstractC5cbca7sService {
                     .mosaic(c5cbca7s.MOSAIC.apply(map).trim())
                     .img(c5cbca7s.IMG.apply(map).trim())
                     .build();
-
-            System.out.println(JSONObject.toJSONString(detail));
             try {
-
+                System.out.println(JSONObject.toJSONString(detail));
                 saveData(detail);
-                //mapper.addInfo(detail);
-                failCount = 0;
+                failCount.set(0);
             }catch (Exception e){
-                failCount ++;
+                failCount.getAndIncrement();
                 System.out.println("【保存失败】"+ JSONObject.toJSONString(detail));
             }
 
         });
-        if(failCount>=10){
+        if(failCount.get() >= SpiderConfig.FAIL_LIMIT_COUNT){
             return Boolean.FALSE;
         }
-        failCount = 0;
         return Boolean.TRUE;
     }
 

@@ -91,12 +91,6 @@ public class c5cbca7s {
     public static Function<Map<String,String>,String>  ACTOR_NAME = map ->  {
         final String defutleName = "人工识别";
         String actor = map.getOrDefault("AV女優",defutleName);
-        /*if(StringUtils.isBlank(actor = StringUtils.deleteWhitespace(actor)) || defutleName.equals(actor)){
-            actor = StringUtils.deleteWhitespace(map.get("【影片名称代号】"));
-            if(actor.contains(" ")){
-                actor = actor.substring(actor.lastIndexOf(" ")+1);
-            }
-        }*/
         return actor;
     };
 
