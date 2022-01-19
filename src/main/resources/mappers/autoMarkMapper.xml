@@ -1,0 +1,16 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="com.self.spider.servies.remote.AutoMarkMapper">
+
+    <resultMap type="com.self.spider.entities.AutoMark" id="BaseResultMap">
+        <id column="id" property="id"  />
+        <result column="keyWord" property="keyWord" />
+        <result column="markType" property="markType" />
+    </resultMap>
+
+
+    <select id="queryAllMark" resultMap="BaseResultMap">
+        select * from auto_mark
+    </select>
+
+</mapper>

@@ -17,4 +17,6 @@ public class QueryAvCondition {
 
     private String tableName;
 
+    private String markId;
+
 }

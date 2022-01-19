@@ -48,6 +48,9 @@
         <if test="avName != null and avName != ''">
             and name like concat('%',#{avName},'%')
         </if>
+        <if test="markId != null and markId != ''">
+            and concat('%,',types,',%') like concat('%,',#{markId},',%')
+        </if>
     </select>
 
     <select id="queryAll"  resultMap="BaseResultMap">
@@ -57,6 +60,9 @@
         </if>
         <if test="avName != null and avName != ''">
             and name like concat('%',#{avName},'%')
+        </if>
+        <if test="markId != null and markId != ''">
+            and concat('%,',types,',%') like concat('%,',#{markId},',%')
         </if>
         order by id desc
         limit #{starNum},#{pageSize}
@@ -80,6 +86,14 @@
             <if test="types != null">types=#{types},</if>
             <if test="img != null">img=#{img},</if>
             audit = 1
+        </set>
+        where id=#{id}
+    </update>
+
+    <update id="updateType">
+        update av_list
+        <set>
+            <if test="types != null">types=#{types}</if>
         </set>
         where id=#{id}
     </update>

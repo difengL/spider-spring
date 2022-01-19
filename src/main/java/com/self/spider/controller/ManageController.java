@@ -71,7 +71,7 @@ public class ManageController {
         String keyWord = request.getParameter("keyWord");
         String marks = request.getParameter("marks");
         ModelAndView mv = new ModelAndView();
-        mv.setViewName("redirect:/view");
+        mv.setViewName("redirect:/addRule");
         if(StringUtils.isBlank(keyWord)){
             return mv;
         }
@@ -226,7 +226,7 @@ public class ManageController {
         typeMapper.addType(avtYPE);
 
         ModelAndView mv = new ModelAndView();
-        mv.setViewName("redirect:/manager");
+        mv.setViewName("redirect:/addRule");
         return mv;
     }
 

@@ -18,6 +18,20 @@
     <script src="https://cdn.staticfile.org/twitter-bootstrap/4.3.1/js/bootstrap.min.js"></script>
 <script>
 
+    function queryPage(num){
+        var markId = $("#markId").val();
+        var avName = $("#avName").val();
+        var movieType =  $("#movieType").val();
+        window.location.href="/list?pageNum="+num+"&avName="+avName+"&movieType="+movieType+"&markId="+markId;
+    }
+
+    function queryByType(markId){
+        var num = 1;
+        var movieType =  $("#movieType").val();
+        window.location.href="/list?pageNum="+num+"&movieType="+movieType+"&markId="+markId;
+    }
+
+
     function quertList(num){
         var avName = $("#avName").val();
         var movieType =  $("#movieType").val();
@@ -74,6 +88,8 @@
                         </div>
                     </div>
                     <input type="hidden" id="movieType" th:value="${movieType}">
+                    <input type="hidden" id="markId" th:value="${markId}">
+
                     <input type="text" id="avName" th:value="${avName}" class="form-control" placeholder="Search">
                     <button class="btn btn-success" type="button" th:onclick="quertList('1')">&nbsp;&nbsp;&nbsp;&nbsp;Search&nbsp;&nbsp;&nbsp;&nbsp;</button>
                 </div>
@@ -109,7 +125,7 @@
                 <h5 class="card-title" th:text="${av.actor}"></h5>
                 <td th:each="kidType : ${typeList}">
                              <span class="badge badge-pill badge-info"
-                                   th:text="${kidType.typeName}" th:if="${#strings.indexOf(','+av.types+',',','+kidType.id+',')>-1}"></span>
+                                   th:text="${kidType.typeName}" th:if="${#strings.indexOf(','+av.types+',',','+kidType.id+',')>-1}" th:onclick="queryByType([[${kidType.id}]])"></span>
                 </td>
                 <p class="card-text" th:text="${av.name}"></p>
                 <a th:href="${av.dowonUrl}" class="btn btn-primary">DowonLoad</a>
@@ -122,20 +138,20 @@
 <div class="container">
     <ul class="pagination justify-content-center pagination-sm">
         <li class="page-item">
-            <a class="page-link" href="javascript:void(0)"  th:onclick="quertList('1')" >首页</a>
+            <a class="page-link" href="javascript:void(0)"  th:onclick="queryPage('1')" >首页</a>
         </li>
         <li class="page-item" th:if="${page.hasPrevious}">
-            <a class="page-link" href="javascript:void(0)"  th:onclick="'javascript:quertList(\'' + ${page.previousNum} + '\')'"  th:text="上一页"></a>
+            <a class="page-link" href="javascript:void(0)"  th:onclick="'javascript:queryPage(\'' + ${page.previousNum} + '\')'"  th:text="上一页"></a>
         </li>
         <li th:each="pageNum:${#numbers.sequence(page.offsetStar, page.offsetEnd)}">
-            <a class="page-link" href = "javascript:void(0)" th:onclick = "'javascript:quertList(\'' + ${pageNum} + '\')'"  th:text="${pageNum}" th:if="${pageNum ne page.pageNumber}"></a>
-            <a class="page-link active" href = "javascript:void(0)" th:onclick = "'javascript:quertList(\'' + ${pageNum} + '\')'" th:text="${pageNum}" th:if="${pageNum eq  page.pageNumber}" th:style="'font-weight:bold;background: #6faed9;'"></a>
+            <a class="page-link" href = "javascript:void(0)" th:onclick = "'javascript:queryPage(\'' + ${pageNum} + '\')'"  th:text="${pageNum}" th:if="${pageNum ne page.pageNumber}"></a>
+            <a class="page-link active" href = "javascript:void(0)" th:onclick = "'javascript:queryPage(\'' + ${pageNum} + '\')'" th:text="${pageNum}" th:if="${pageNum eq  page.pageNumber}" th:style="'font-weight:bold;background: #6faed9;'"></a>
         </li>
         <li class="page-item" th:if="${page.hasNext}">
-            <a class="page-link" href = "javascript:void(0)"   th:onclick = "'javascript:quertList(\'' + ${ page.nextNum } + '\')'" th:text="下一页"></a>
+            <a class="page-link" href = "javascript:void(0)"   th:onclick = "'javascript:queryPage(\'' + ${ page.nextNum } + '\')'" th:text="下一页"></a>
         </li>
         <li class="page-item">
-            <a class="page-link" href="javascript:void(0)"  th:onclick="'javascript:quertList(\'' + ${ page.totalPages } + '\')'" >尾页</a>
+            <a class="page-link" href="javascript:void(0)"  th:onclick="'javascript:queryPage(\'' + ${ page.totalPages } + '\')'" >尾页</a>
         </li>
     </ul>
 </div>

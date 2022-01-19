@@ -27,4 +27,9 @@ public interface AvMapper {
     TitleDetail queryByUpdate();
 
     void updateActor(TitleDetail detail);
+
+    /**
+     * 更新标签
+     */
+    int updateType(@Param("id") int id,@Param("types") String types);
 }

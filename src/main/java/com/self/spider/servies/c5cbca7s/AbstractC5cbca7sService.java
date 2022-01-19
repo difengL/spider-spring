@@ -26,11 +26,11 @@ public abstract class AbstractC5cbca7sService {
      */
     public void spiderData(int startNum,int num){
         for (int i = startNum; i < startNum+num ; i++) {
-            System.out.println(String.format("第【%s】页",i));
+            System.out.printf("第【%s】页%n",i);
             String url = getTableUrl() + "&page="+i;
             List<Catalogue> detailUrl = titleList(url);
             if(!detail(detailUrl)){
-                System.out.println(String.format("连续保存失败达到【%s】次，终止爬虫。",SpiderConfig.FAIL_LIMIT_COUNT));
+                System.out.printf("连续保存失败达到【%s】次，终止爬虫。%n",SpiderConfig.FAIL_LIMIT_COUNT);
                 break;
             }
         }
@@ -72,51 +72,51 @@ public abstract class AbstractC5cbca7sService {
     protected boolean detail(List<Catalogue> detailUrl){
         //统计连续失败的次数
         AtomicInteger failCount = new AtomicInteger();
-        detailUrl.forEach(element -> {
+        for (Catalogue element : detailUrl) {
             String result;
             Document document;
             int forCount = 5;
             //如果一次发送https失败，则重试5次
-            for (;;){
+            for (; ; ) {
                 result = GetToolKit.get_https(element.getUrl());
                 document = Jsoup.parse(result);
                 boolean action = StringUtils.isNotBlank(result) && Objects.nonNull(document);
-                forCount --;
-                if(action||forCount<=0){
+                forCount--;
+                if (action || forCount <= 0) {
                     break;
                 }
                 try {
                     Thread.sleep(200);
-                } catch (InterruptedException e) {
+                } catch (InterruptedException ignored) {
                 }
             }
             //影片名称
-            Map<String,String> map = new HashMap<>();
-            String [] arr = document.getElementById("read_tpc").html().split("\n");
+            Map<String, String> map = new HashMap<>();
+            String[] arr = document.getElementById("read_tpc").html().split("\n");
             Arrays.stream(arr)
-                    .map(item -> item.replace("<br>",""))
-                    .map(item -> item.replace("&nbsp;"," "))
+                    .map(item -> item.replace("<br>", ""))
+                    .map(item -> item.replace("&nbsp;", " "))
                     .forEach(item -> {
                         //System.out.println(item);
-                        String [] kv = item.split("：");
-                        if(kv.length==1){
-                            map.put(kv[0],"");
-                        }else if(kv.length==2){
-                            map.put(kv[0],kv[1]);
+                        String[] kv = item.split("：");
+                        if (kv.length == 1) {
+                            map.put(kv[0], "");
+                        } else if (kv.length == 2) {
+                            map.put(kv[0], kv[1]);
                         }
                     });
             String actor = c5cbca7s.ACTOR_NAME.apply(map);
             //首先从标题里面取值
-            if(element.getTitle().contains("VIP")){
-                actor = element.getTitle().substring(0,element.getTitle().indexOf("VIP"));
+            if (element.getTitle().contains("VIP")) {
+                actor = element.getTitle().substring(0, element.getTitle().indexOf("VIP"));
                 actor = actor.substring(actor.trim().lastIndexOf(" "));
                 actor = StringUtils.deleteWhitespace(actor);
-            }else if("人工识别".equals(actor)){
-                actor = element.getTitle().substring(element.getTitle().trim().lastIndexOf(" ")+1);
+            } else if ("人工识别".equals(actor)) {
+                actor = element.getTitle().substring(element.getTitle().trim().lastIndexOf(" ") + 1);
             }
-            actor = actor.trim().replace("[中文字幕]","");
-            if(actor.endsWith("[")||actor.endsWith("【")) {
-                actor = actor.substring(0,actor.length()-1);
+            actor = actor.trim().replace("[中文字幕]", "");
+            if (actor.endsWith("[") || actor.endsWith("【")) {
+                actor = actor.substring(0, actor.length() - 1);
             }
             TitleDetail detail = TitleDetail.builder()
                     .name(ZhConverterUtil.convertToSimple(element.getTitle().trim()))
@@ -129,12 +129,12 @@ public abstract class AbstractC5cbca7sService {
                 System.out.println(JSONObject.toJSONString(detail));
                 saveData(detail);
                 failCount.set(0);
-            }catch (Exception e){
+            } catch (Exception e) {
                 failCount.getAndIncrement();
-                System.out.println("【保存失败】"+ JSONObject.toJSONString(detail));
+                System.out.println("【保存失败】" + JSONObject.toJSONString(detail));
             }
 
-        });
+        }
         if(failCount.get() >= SpiderConfig.FAIL_LIMIT_COUNT){
             return Boolean.FALSE;
         }

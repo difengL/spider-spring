@@ -41,6 +41,7 @@ public class ListController {
         String avName = request.getParameter("avName");
         String avActor = request.getParameter("avActor");
         String movieType = request.getParameter("movieType");
+        String markId = request.getParameter("markId");
         if(StringUtils.isBlank(movieType)){
             movieType = "1";
         }
@@ -53,6 +54,7 @@ public class ListController {
         QueryAvCondition condition = QueryAvCondition.builder()
                 .starNum((pageNum - 1 )*pageSize)
                 .pageSize(pageSize)
+                .markId(markId)
                 .actor(StringUtils.isNotBlank(avActor)?avActor.substring(avActor.indexOf(")")+1):null)
                 .avName(avName)
                 .tableName("2".equals(movieType)?"av_list_china":"av_list")
@@ -75,16 +77,16 @@ public class ListController {
                 .offsetStar(offsetStar)
                 .offsetEnd(offsetEnd<=totalPages?offsetEnd:totalPages)
                 .build();
-        //查询所有去重的名称
+        //查询所有标签类型
         List<AvType> typeList = typeMapper.queryAllType();
 
-
-        // mapper.queryAllActor().stream().filter(item -> StringUtils.isNotBlank(item)&&item.length()<=10).collect(Collectors.toList())
         ModelAndView mv = new ModelAndView();
         mv.addObject("page", page);
         mv.addObject("actorList",new ArrayList<>());
         mv.addObject("avName", avName);
         mv.addObject("movieType", movieType);
+        mv.addObject("markId", markId);
+
         if("1".equals(movieType)){
             mv.addObject("movieTypeName", "岛国");
         }else if("2".equals(movieType)){
