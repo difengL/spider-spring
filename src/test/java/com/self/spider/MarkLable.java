@@ -4,7 +4,9 @@ import com.alibaba.fastjson.JSONObject;
 import com.self.spider.entities.TitleDetail;
 import com.self.spider.entities.dto.QueryAvCondition;
 import com.self.spider.scheduled.thread.BT.LoadMarkSourceTask;
+import com.self.spider.servies.c5cbca7s.manager.CinfigManager;
 import com.self.spider.servies.remote.AvMapper;
+import com.self.spider.toolkits.GetToolKit;
 import lombok.val;
 import org.apache.commons.collections4.MapUtils;
 import org.apache.commons.lang3.StringUtils;
@@ -31,14 +33,14 @@ public class MarkLable {
 
     @Test
     void test(){
-        for (int i = 0; i < 54; i++) {
+        for (int i = 0; i < 1; i++) {
             QueryAvCondition condition = QueryAvCondition.builder()
                     .tableName("av_list")
                     .starNum(i*100)
                     .pageSize(100)
                     .build();
             System.out.println(i*100 +" ~ " +(i+1)*100);
-            val titleDetails = mapper.queryAll(condition);
+            val titleDetails = mapper.queryAllNeedMark(condition);
             titleDetails.forEach(item -> {
                 MAKE_MARK.accept(item);
                 mapper.updateType(item.getId(),item.getTypes());
@@ -56,13 +58,24 @@ public class MarkLable {
         for (int i = 0; i < 1; i++) {
             TitleDetail detail = TitleDetail.builder()
                     //25个字
-                    .name("[12.16] [MP4/ 1.16G] GS-393 惩罚女员工！全裸只穿连裤袜羞耻攻击！ 只穿一条连裤袜！[中文字幕]")
+                    .name("123")
                     .build();
             MAKE_MARK.accept(detail);
             System.out.println(JSONObject.toJSONString(detail));
         }
         System.out.println(System.currentTimeMillis() - t1);
     }
+
+
+    @Test
+    void test2(){
+
+        String url = CinfigManager.getInstons().getPrefix()+ "thread.php?fid=110";
+        System.out.println(url);
+        String result = GetToolKit.get_https(url);
+        System.out.println(result);
+    }
+
 
 
 

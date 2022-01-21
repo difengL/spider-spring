@@ -18,8 +18,8 @@
 
     <!--插入job-->
     <insert id="addInfo" parameterType="com.self.spider.entities.TitleDetail" useGeneratedKeys="true" keyColumn="id" keyProperty="id">
-        insert into  ${tableName} (name,actor,subtitle,mosaic,md5,dowonUrl,img) VALUES
-            (#{name},#{actor},#{subtitle},#{mosaic},#{md5},#{dowonUrl},#{img})
+        insert into  ${tableName} (name,actor,subtitle,mosaic,md5,dowonUrl,img,types,audit) VALUES
+            (#{name},#{actor},#{subtitle},#{mosaic},#{md5},#{dowonUrl},#{img},#{types},#{audit})
     </insert>
 
     <update id="updateInfo" parameterType="com.self.spider.entities.TitleDetail">
@@ -67,6 +67,13 @@
         order by id desc
         limit #{starNum},#{pageSize}
     </select>
+
+    <select id="queryAllNeedMark"  resultMap="BaseResultMap">
+        select id,name from ${tableName}  where audit = 0 and types is null
+        order by id desc
+        limit #{starNum},#{pageSize}
+    </select>
+
 
     <select id="queryAllActor"  resultType="java.lang.String">
         SELECT concat('(',count(1),')',actor) from av_list GROUP BY actor

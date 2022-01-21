@@ -3,11 +3,20 @@ package com.self.spider;
 import com.alibaba.fastjson.JSONObject;
 import com.self.spider.child.SyncTest;
 import com.self.spider.entities.TitleDetail;
+import com.self.spider.entities.business.Catalogue;
 import com.self.spider.scheduled.thread.BT.LoadMarkSourceTask;
+import com.self.spider.servies.c5cbca7s.manager.CinfigManager;
+import com.self.spider.toolkits.GetToolKit;
+import com.self.spider.toolkits.PropertiesKits;
 import lombok.val;
 import org.apache.commons.collections4.MapUtils;
 import org.apache.commons.lang3.StringUtils;
+import org.jsoup.Jsoup;
+import org.jsoup.nodes.Document;
+import org.jsoup.nodes.Element;
+import org.springframework.util.ResourceUtils;
 
+import java.io.*;
 import java.util.*;
 import java.util.concurrent.locks.Lock;
 import java.util.concurrent.locks.ReentrantLock;
@@ -15,21 +24,11 @@ import java.util.function.Consumer;
 
 public class Test1 {
 
-    public static void main(String[] args) throws InterruptedException {
-        LoadMarkSourceTask.MAX_LENGTH.set(4);
-
-        LoadMarkSourceTask.MARK_SOURCE.put("用户我草啊","1,30,69,22");
-        LoadMarkSourceTask.MARK_SOURCE.put("坚持","1,32,10");
-        LoadMarkSourceTask.MARK_SOURCE.put("品格","322,10");
-        TitleDetail detail = TitleDetail.builder()
-                .name("坚持")
-                .build();
-        MAKE_MARK.accept(detail);
-
-        System.out.println(JSONObject.toJSONString(detail));
-
-
-
+    public static void main(String[] args) throws InterruptedException, IOException {
+      String url = CinfigManager.getInstons().getPrefix()+ "thread.php?fid=110";
+        System.out.println(url);
+        String result = GetToolKit.get_https(url);
+        System.out.println(result);
 
     }
 

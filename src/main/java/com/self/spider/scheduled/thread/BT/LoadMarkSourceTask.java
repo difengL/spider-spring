@@ -33,7 +33,7 @@ public class LoadMarkSourceTask {
     private AutoMarkMapper autoMarkMapper;
 
 
-    @Scheduled(cron = "0 0 */1 * * ?")
+    @Scheduled(cron = "0 0 */20 * * ?")
     public void configureTasks() {
         //查询所有标签
         MARK_SOURCE.clear();

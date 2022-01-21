@@ -30,8 +30,10 @@ public class BTjapanService extends AbstractC5cbca7sService {
 
     @Override
     protected void saveData(TitleDetail detail){
-        detail.setTableName("av_list");
+
         MAKE_MARK.accept(detail);
+        detail.setTableName("av_list");
+        detail.setAudit(0);
         mapper.addInfo(detail);
     }
 

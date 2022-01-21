@@ -12,6 +12,7 @@ import com.self.spider.toolkits.GetToolKit;
 import org.apache.commons.lang3.StringUtils;
 import org.jsoup.Jsoup;
 import org.jsoup.nodes.Document;
+import org.jsoup.nodes.Element;
 import org.jsoup.select.Elements;
 
 import java.util.*;
@@ -47,6 +48,12 @@ public abstract class AbstractC5cbca7sService {
         String result = GetToolKit.get_https(url);
         Document document = Jsoup.parse(result);
         Elements trList = document.getElementById("ajaxtable").getElementsByTag("tr");
+        if(trList == null || trList.size()<=0){
+            url = recentlyUrl(url);
+            result = GetToolKit.get_https(url);
+            document = Jsoup.parse(result);
+            trList = document.getElementById("ajaxtable").getElementsByTag("tr");
+        }
         titleUrl = trList.stream()
                 .map(element -> {
                     Elements ele = element.select("td").eq(1).select("a");
@@ -142,6 +149,17 @@ public abstract class AbstractC5cbca7sService {
     }
 
     protected abstract void saveData(TitleDetail detail) throws Exception;
+
+
+    protected String recentlyUrl (String oldUrl){
+        String result = GetToolKit.get_https(oldUrl);
+        Document document = Jsoup.parse(result);
+        Element ele = document.getElementById("headbase");
+        String baseurl = ele.attr("href");
+        CinfigManager.getInstons().setPrefix(baseurl,true);
+        //把最新的写入到本地文件
+        return baseurl;
+    }
 
 
 

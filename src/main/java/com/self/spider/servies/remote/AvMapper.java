@@ -32,4 +32,7 @@ public interface AvMapper {
      * 更新标签
      */
     int updateType(@Param("id") int id,@Param("types") String types);
+
+
+    List<TitleDetail> queryAllNeedMark(QueryAvCondition condition);
 }

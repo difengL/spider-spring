@@ -1,5 +1,6 @@
 package com.self.spider.servies.c5cbca7s.manager;
 
+import com.self.spider.toolkits.PropertiesKits;
 import org.apache.commons.lang3.StringUtils;
 
 /**
@@ -19,13 +20,20 @@ public class CinfigManager {
 
     public String getPrefix() {
         if(StringUtils.isBlank(prefix)){
-            prefix = "http://k7.2112ky.com/pw/";
+            prefix = "http://z11.ef7d6a2b557.rocks/pw/";
         }
         return prefix;
     }
 
     public void setPrefix(String prefix) {
         this.prefix = prefix;
+    }
+
+    public void setPrefix(String prefix,boolean initAction) {
+        this.prefix = prefix;
+        if(initAction){
+            PropertiesKits.SET_PROPERTIES_NAME.accept(prefix);
+        }
     }
 
     public String getDowonLoadMark() {

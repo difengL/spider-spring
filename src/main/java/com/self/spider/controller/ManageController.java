@@ -106,7 +106,7 @@ public class ManageController {
 
     @PostMapping("executeSpider")
     public ModelAndView executeSpider(String prefix,String dowonLoadMark,String num,String optradio,String moveType) {
-        CinfigManager.getInstons().setPrefix(prefix);
+        CinfigManager.getInstons().setPrefix(prefix,true);
         CinfigManager.getInstons().setDowonLoadMark(dowonLoadMark);
         CinfigManager.getInstons().setNum(Integer.parseInt(num));
         ModelAndView mv = new ModelAndView();
