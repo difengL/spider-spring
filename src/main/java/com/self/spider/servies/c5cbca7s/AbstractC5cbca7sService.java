@@ -78,7 +78,7 @@ public abstract class AbstractC5cbca7sService {
 
     protected boolean detail(List<Catalogue> detailUrl){
         //统计连续失败的次数
-        AtomicInteger failCount = new AtomicInteger();
+        AtomicInteger failCount = new AtomicInteger(0);
         for (Catalogue element : detailUrl) {
             String result;
             Document document;

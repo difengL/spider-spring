@@ -1,6 +1,6 @@
 package com.self.spider.scheduled.thread.BT;
 
-import com.self.spider.servies.c5cbca7s.japan.BTjapanService;
+import com.self.spider.servies.c5cbca7s.limit.LimitLevelService;
 import com.self.spider.servies.c5cbca7s.manager.CinfigManager;
 import org.springframework.context.annotation.Configuration;
 import org.springframework.scheduling.annotation.EnableScheduling;
@@ -12,16 +12,17 @@ import javax.annotation.Resource;
 @Component
 @Configuration
 @EnableScheduling
-public class JapanScheduleTask {
+public class LimitScheduleTask {
 
     @Resource
-    private BTjapanService service;
+    private LimitLevelService service;
 
-    @Scheduled(cron = "0 0 5 * * ?")
+    @Scheduled(cron = "0 50 5 * * ?")
     public void configureTasks() {
         int num = CinfigManager.getInstons().getNum();
         int startNum = CinfigManager.getInstons().getStartNum();
         WorkerThreadPool.THREADPOOL.execute(() -> service.spiderData(startNum,num));
     }
+
 
 }

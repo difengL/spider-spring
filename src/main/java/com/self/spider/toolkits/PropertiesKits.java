@@ -22,7 +22,6 @@ public class PropertiesKits {
     static {
         try {
             path = System.getProperty("user.dir")+"/sourcepath.properties";
-            System.out.println(path);
             File file = new File(path);
             if(!file.exists()){
                 file.getParentFile().mkdirs();

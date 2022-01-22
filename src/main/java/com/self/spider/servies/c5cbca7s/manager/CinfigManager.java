@@ -59,6 +59,9 @@ public class CinfigManager {
     }
 
     public int getStartNum() {
+        if(startNum <= 0){
+            startNum = 1;
+        }
         return startNum;
     }
 

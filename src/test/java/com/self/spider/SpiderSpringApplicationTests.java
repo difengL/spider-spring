@@ -7,6 +7,7 @@ import com.self.spider.entities.business.Catalogue;
 import com.self.spider.handler.c5cbca7s;
 import com.self.spider.servies.c5cbca7s.china.BTchinaService;
 import com.self.spider.servies.c5cbca7s.japan.BTjapanService;
+import com.self.spider.servies.c5cbca7s.limit.LimitLevelService;
 import com.self.spider.servies.remote.AvMapper;
 import com.self.spider.toolkits.GetToolKit;
 import org.apache.commons.lang3.StringUtils;
@@ -36,10 +37,17 @@ class SpiderSpringApplicationTests {
     @Resource
     private BTchinaService chinaService;
 
+    @Resource
+    private LimitLevelService limitService;
+
     @Test
     void contextLoads() {
+        limitService.spiderData(1,1);
 
-        japanService.spiderData(3,2);
+        //System.out.println(JSONObject.toJSONString(titleList("http://z11.ef7d6a2b557.rocks/pw/thread.php?fid=18&page=1")));
+
+        //detail(Collections.singletonList(Catalogue.builder().title("/BT]").url("http://z11.adca2cf2fdb.rocks/pw/html_data/18/2201/5800657.html").build()));
+        //japanService.spiderData(3,2);
 
        /* TitleDetail info = mapper.queryByUrl("https://ww1.bi22t.club/torrent/393615F6C515D78A492E31731E2104F26CEBFBE1");
         System.out.println(JSONObject.toJSONString(info));*/
@@ -77,6 +85,9 @@ class SpiderSpringApplicationTests {
 
             try {
                 String result = GetToolKit.get_https(element.getUrl());
+
+                System.out.println(result);
+
                 Document document = Jsoup.parse(result);
                 if(null==document){
                     return;
@@ -119,7 +130,7 @@ class SpiderSpringApplicationTests {
                         .build();
 
                 System.out.println(JSONObject.toJSONString(detail));
-                mapper.addInfo(detail);
+                //mapper.addInfo(detail);
                 Thread.sleep(500);
                 //TitleDetail info = mapper.queryByUrl(detail.getDowonUrl());
                /* if(info!=null){
@@ -143,6 +154,8 @@ class SpiderSpringApplicationTests {
 
         List<Catalogue> titleUrl;
         String result = GetToolKit.get_https(url);
+        System.out.println(result);
+        System.out.println("---------------------------------------------------------------------");
         Document document = Jsoup.parse(result);
         Elements trList = document.getElementById("ajaxtable").getElementsByTag("tr");
         titleUrl = trList.stream()

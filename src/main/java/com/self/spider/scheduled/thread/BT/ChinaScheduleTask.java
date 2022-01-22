@@ -23,9 +23,8 @@ public class ChinaScheduleTask {
     @Scheduled(cron = "0 30 5 * * ?")
     public void configureTasks() {
         int num = CinfigManager.getInstons().getNum();
-        WorkerThreadPool.THREADPOOL.execute(() -> {
-            service.spiderData(1,num);
-        });
+        int startNum = CinfigManager.getInstons().getStartNum();
+        WorkerThreadPool.THREADPOOL.execute(() -> service.spiderData(startNum,num));
     }
 
 

@@ -8,6 +8,7 @@ import com.self.spider.entities.dto.PageInfo;
 import com.self.spider.entities.dto.QueryAvCondition;
 import com.self.spider.servies.remote.AvMapper;
 import com.self.spider.servies.remote.TypeMapper;
+import com.self.spider.toolkits.SpiderKies;
 import org.apache.commons.lang3.StringUtils;
 import org.springframework.stereotype.Controller;
 import org.springframework.util.CollectionUtils;
@@ -57,7 +58,7 @@ public class ListController {
                 .markId(markId)
                 .actor(StringUtils.isNotBlank(avActor)?avActor.substring(avActor.indexOf(")")+1):null)
                 .avName(avName)
-                .tableName("2".equals(movieType)?"av_list_china":"av_list")
+                .tableName(SpiderKies.TABLE_NAME.apply(movieType))
                 .build();
 
         int totalSize = mapper.queryTotalPages(condition);

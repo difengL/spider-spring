@@ -6,6 +6,7 @@ import com.self.spider.entities.TitleDetail;
 import com.self.spider.entities.dto.AvTypeDto;
 import com.self.spider.scheduled.thread.BT.ChinaScheduleTask;
 import com.self.spider.scheduled.thread.BT.JapanScheduleTask;
+import com.self.spider.scheduled.thread.BT.LimitScheduleTask;
 import com.self.spider.servies.c5cbca7s.manager.CinfigManager;
 import com.self.spider.servies.remote.AvMapper;
 import com.self.spider.servies.remote.RuleMapper;
@@ -19,6 +20,7 @@ import org.springframework.web.servlet.ModelAndView;
 import javax.annotation.Resource;
 import javax.servlet.http.HttpServletRequest;
 import java.util.ArrayList;
+import java.util.Arrays;
 import java.util.List;
 import java.util.Objects;
 
@@ -38,6 +40,9 @@ public class ManageController {
 
     @Resource
     private ChinaScheduleTask chinaTask;
+
+    @Resource
+    private LimitScheduleTask limitTask;
 
 
     @Resource
@@ -105,23 +110,30 @@ public class ManageController {
     }
 
     @PostMapping("executeSpider")
-    public ModelAndView executeSpider(String prefix,String dowonLoadMark,String num,String optradio,String moveType) {
+    public ModelAndView executeSpider(String prefix,String dowonLoadMark,String num,String optradio,String moveType,String startNum) {
         CinfigManager.getInstons().setPrefix(prefix,true);
         CinfigManager.getInstons().setDowonLoadMark(dowonLoadMark);
         CinfigManager.getInstons().setNum(Integer.parseInt(num));
+        CinfigManager.getInstons().setStartNum(Integer.parseInt(startNum));
         ModelAndView mv = new ModelAndView();
         mv.setViewName("redirect:/view");
         if("2".equals(optradio)){
             return mv;
         }
         //判断执行的类型
-        if("1,2".equals(moveType)){
-            chinaTask.configureTasks();
-            japanTask.configureTasks();
-        }else if("1".equals(moveType)){
-            japanTask.configureTasks();
-        }else if("2".equals(moveType)){
-            chinaTask.configureTasks();
+        if(StringUtils.isNotBlank(moveType)){
+            Arrays.stream(moveType.split(",")).map(Integer::parseInt).forEach(type -> {
+                if(type == 1 ){
+                    japanTask.configureTasks();
+                }
+                if(type == 2 ){
+                    chinaTask.configureTasks();
+                }
+                if(type == 3 ){
+                    limitTask.configureTasks();
+                }
+
+            });
         }
         return mv;
     }

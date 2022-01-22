@@ -16,15 +16,6 @@
 
     <!-- 最新的 Bootstrap4 核心 JavaScript 文件 -->
     <script src="https://cdn.staticfile.org/twitter-bootstrap/4.3.1/js/bootstrap.min.js"></script>
-<script>
-    function submitMark(){
-        var sortNum = $("#sel1").val();
-        var divide = $("#sel1  option:selected").text();
-        var typeName = $("#markName").val();
-        //window.location.href = "/addMark?sortNum="+sortNum+"&divide="+divide+"&typeName="+typeName;
-    }
-
-</script>
 
 <body>
 <nav class="navbar navbar-expand-md bg-dark navbar-dark">
@@ -56,17 +47,17 @@
             <label for="prefix">爬取类型:</label>
             <div class="form-check form-check-inline">
                 <label class="form-check-label">
-                    <input type="checkbox" name="moveType" class="form-check-input" checked value="1">岛国
+                    <input type="checkbox" name="moveType" class="form-check-input"  value="1">岛国
                 </label>
             </div>
             <div class="form-check form-check-inline">
                 <label class="form-check-label">
-                    <input type="checkbox" name="moveType" class="form-check-input" checked value="2">国产
+                    <input type="checkbox" name="moveType" class="form-check-input"  value="2">国产
                 </label>
             </div>
             <div class="form-check form-check-inline disabled">
                 <label class="form-check-label">
-                    <input type="checkbox" name="moveType" class="form-check-input" value="3" disabled>三级
+                    <input type="checkbox" name="moveType" class="form-check-input" value="3">三级
                 </label>
             </div>
         </div>
@@ -87,8 +78,14 @@
             <input type="text" class="form-control" name="dowonLoadMark" th:value="${spider.dowonLoadMark}" id="dowonLoadMark" style="width: 60%">
         </div>
         <div class="form-group">
-            <label for="num">爬取页数:</label>
-            <input type="text" class="form-control" name="num" th:value="${spider.num}" id="num" style="width: 30%">
+            <label for="num">爬虫页码（star~size）:</label>
+
+            <div class="form-inline">
+                <input type="text" class="form-control" name="startNum" th:value="${spider.startNum}" id="num" style="width: 25%">
+                ~
+                <input type="text" class="form-control" name="num" th:value="${spider.num}" id="num" style="width: 25%">
+            </div>
+
         </div>
         <button type="submit" class="btn btn-primary">  SPIDER  </button>
     </form>
