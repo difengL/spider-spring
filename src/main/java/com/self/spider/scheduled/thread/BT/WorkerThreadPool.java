@@ -9,7 +9,7 @@ import java.util.concurrent.*;
  */
 public class WorkerThreadPool {
 
-    public static final ThreadPoolExecutor THREADPOOL = new ThreadPoolExecutor(1, 1, 0,
-            TimeUnit.MILLISECONDS, new LinkedBlockingQueue<Runnable>(),
+    public static final ThreadPoolExecutor THREADPOOL = new ThreadPoolExecutor(5, 8, 100,
+            TimeUnit.SECONDS, new LinkedBlockingQueue<Runnable>(),
             new ThreadPoolExecutor.DiscardOldestPolicy());
 }

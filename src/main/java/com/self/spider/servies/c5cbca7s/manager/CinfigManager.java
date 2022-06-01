@@ -38,7 +38,7 @@ public class CinfigManager {
 
     public String getDowonLoadMark() {
         if(StringUtils.isBlank(dowonLoadMark)){
-            dowonLoadMark = "/torrent/";
+            dowonLoadMark = "91dfgh";
         }
         return dowonLoadMark;
     }

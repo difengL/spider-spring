@@ -97,7 +97,7 @@ public class c5cbca7s {
     public static Function<Map<String,String>,String>  DOWONLOAD_URL = map ->  {
         AtomicReference<String> url = new AtomicReference<>("找不到下载地址");
         map.forEach((k,v) ->{
-            if(k.contains("/torrent/")){
+            if(k.contains("91dfjh")){
                 url.set(Jsoup.parse(k).getElementsByTag("a").attr("href"));
             }
         });

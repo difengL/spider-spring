@@ -80,66 +80,75 @@ public abstract class AbstractC5cbca7sService {
         //统计连续失败的次数
         AtomicInteger failCount = new AtomicInteger(0);
         for (Catalogue element : detailUrl) {
-            String result;
-            Document document;
-            int forCount = 5;
-            //如果一次发送https失败，则重试5次
-            for (; ; ) {
-                result = GetToolKit.get_https(element.getUrl());
-                document = Jsoup.parse(result);
-                boolean action = StringUtils.isNotBlank(result) && Objects.nonNull(document);
-                forCount--;
-                if (action || forCount <= 0) {
-                    break;
-                }
-                try {
-                    Thread.sleep(200);
-                } catch (InterruptedException ignored) {
-                }
-            }
-            //影片名称
-            Map<String, String> map = new HashMap<>();
-            String[] arr = document.getElementById("read_tpc").html().split("\n");
-            Arrays.stream(arr)
-                    .map(item -> item.replace("<br>", ""))
-                    .map(item -> item.replace("&nbsp;", " "))
-                    .forEach(item -> {
-                        //System.out.println(item);
-                        String[] kv = item.split("：");
-                        if (kv.length == 1) {
-                            map.put(kv[0], "");
-                        } else if (kv.length == 2) {
-                            map.put(kv[0], kv[1]);
-                        }
-                    });
-            String actor = c5cbca7s.ACTOR_NAME.apply(map);
-            //首先从标题里面取值
-            if (element.getTitle().contains("VIP")) {
-                actor = element.getTitle().substring(0, element.getTitle().indexOf("VIP"));
-                actor = actor.substring(actor.trim().lastIndexOf(" "));
-                actor = StringUtils.deleteWhitespace(actor);
-            } else if ("人工识别".equals(actor)) {
-                actor = element.getTitle().substring(element.getTitle().trim().lastIndexOf(" ") + 1);
-            }
-            actor = actor.trim().replace("[中文字幕]", "");
-            if (actor.endsWith("[") || actor.endsWith("【")) {
-                actor = actor.substring(0, actor.length() - 1);
-            }
-            TitleDetail detail = TitleDetail.builder()
-                    .name(ZhConverterUtil.convertToSimple(element.getTitle().trim()))
-                    .actor(ZhConverterUtil.convertToSimple(actor.trim()))
-                    .dowonUrl(c5cbca7s.DOWONLOAD_URL.apply(map).trim())
-                    .mosaic(c5cbca7s.MOSAIC.apply(map).trim())
-                    .img(c5cbca7s.IMG.apply(map).trim())
-                    .build();
+
             try {
-                System.out.println(JSONObject.toJSONString(detail));
-                saveData(detail);
-                failCount.set(0);
-            } catch (Exception e) {
-                failCount.getAndIncrement();
-                System.out.println("【保存失败】" + JSONObject.toJSONString(detail));
-            }
+                String result;
+                Document document;
+                int forCount = 5;
+                //如果一次发送https失败，则重试5次
+                for (; ; ) {
+                    result = GetToolKit.get_https(element.getUrl());
+                    if(StringUtils.isBlank(result)){
+                        forCount--;
+                        continue;
+                    }
+                    document = Jsoup.parse(result);
+                    boolean action = StringUtils.isNotBlank(result) && Objects.nonNull(document);
+                    forCount--;
+                    if (action || forCount <= 0) {
+                        break;
+                    }
+                    try {
+                        Thread.sleep(200);
+                    } catch (InterruptedException ignored) {
+                    }
+                }
+                //影片名称
+                Map<String, String> map = new HashMap<>();
+                String[] arr = document.getElementById("read_tpc").html().split("\n");
+                Arrays.stream(arr)
+                        .map(item -> item.replace("<br>", ""))
+                        .map(item -> item.replace("&nbsp;", " "))
+                        .forEach(item -> {
+                            //System.out.println(item);
+                            String[] kv = item.split("：");
+                            if (kv.length == 1) {
+                                map.put(kv[0], "");
+                            } else if (kv.length == 2) {
+                                map.put(kv[0], kv[1]);
+                            }
+                        });
+                String actor = c5cbca7s.ACTOR_NAME.apply(map);
+                //首先从标题里面取值
+                if (element.getTitle().contains("VIP")) {
+                    actor = element.getTitle().substring(0, element.getTitle().indexOf("VIP"));
+                    actor = actor.substring(actor.trim().lastIndexOf(" "));
+                    actor = StringUtils.deleteWhitespace(actor);
+                } else if ("人工识别".equals(actor)) {
+                    actor = element.getTitle().substring(element.getTitle().trim().lastIndexOf(" ") + 1);
+                }
+                actor = actor.trim().replace("[中文字幕]", "");
+                if (actor.endsWith("[") || actor.endsWith("【")) {
+                    actor = actor.substring(0, actor.length() - 1);
+                }
+                TitleDetail detail = TitleDetail.builder()
+                        .name(ZhConverterUtil.convertToSimple(element.getTitle().trim()))
+                        .actor(ZhConverterUtil.convertToSimple(actor.trim()))
+                        .dowonUrl(c5cbca7s.DOWONLOAD_URL.apply(map).trim())
+                        .mosaic(c5cbca7s.MOSAIC.apply(map).trim())
+                        .img(c5cbca7s.IMG.apply(map).trim())
+                        .build();
+                try {
+                    System.out.println(JSONObject.toJSONString(detail));
+                    saveData(detail);
+                    failCount.set(0);
+                } catch (Exception e) {
+                    failCount.getAndIncrement();
+                    System.out.println("【保存失败】" + JSONObject.toJSONString(detail));
+                }
+            }catch (Exception ignoed){}
+
+
 
         }
         if(failCount.get() >= SpiderConfig.FAIL_LIMIT_COUNT){
