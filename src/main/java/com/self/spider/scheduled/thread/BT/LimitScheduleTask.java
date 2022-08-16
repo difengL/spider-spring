@@ -17,7 +17,7 @@ public class LimitScheduleTask {
     @Resource
     private LimitLevelService service;
 
-    @Scheduled(cron = "0 50 5 * * ?")
+    /*@Scheduled(cron = "0 50 5 * * ?")*/
     public void configureTasks() {
         int num = CinfigManager.getInstons().getNum();
         int startNum = CinfigManager.getInstons().getStartNum();

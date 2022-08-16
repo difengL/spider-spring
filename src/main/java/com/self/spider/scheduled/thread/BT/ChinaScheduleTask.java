@@ -20,7 +20,7 @@ public class ChinaScheduleTask {
     @Resource
     private BTchinaService service;
 
-    @Scheduled(cron = "0 30 5 * * ?")
+   /* @Scheduled(cron = "0 30 5 * * ?")*/
     public void configureTasks() {
         int num = CinfigManager.getInstons().getNum();
         int startNum = CinfigManager.getInstons().getStartNum();

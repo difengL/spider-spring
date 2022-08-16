@@ -17,7 +17,7 @@ public class JapanScheduleTask {
     @Resource
     private BTjapanService service;
 
-    @Scheduled(cron = "0 0 5 * * ?")
+   /* @Scheduled(cron = "0 0 5 * * ?")*/
     public void configureTasks() {
         int num = CinfigManager.getInstons().getNum();
         int startNum = CinfigManager.getInstons().getStartNum();

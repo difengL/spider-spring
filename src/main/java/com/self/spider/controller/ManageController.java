@@ -13,8 +13,7 @@ import com.self.spider.servies.remote.RuleMapper;
 import com.self.spider.servies.remote.TypeMapper;
 import org.apache.commons.lang3.StringUtils;
 import org.springframework.stereotype.Controller;
-import org.springframework.web.bind.annotation.PostMapping;
-import org.springframework.web.bind.annotation.RequestMapping;
+import org.springframework.web.bind.annotation.*;
 import org.springframework.web.servlet.ModelAndView;
 
 import javax.annotation.Resource;
@@ -50,6 +49,18 @@ public class ManageController {
 
     @Resource
     private RuleMapper ruleMapper;
+
+
+    private static final String SCRIPT_STR = "false";
+
+
+
+    @ResponseBody
+    @RequestMapping(value = "/version", method = RequestMethod.GET)
+    public String version() {
+        return  SCRIPT_STR;
+    }
+
 
     @RequestMapping("/manager")
     public ModelAndView manager(HttpServletRequest request) {
