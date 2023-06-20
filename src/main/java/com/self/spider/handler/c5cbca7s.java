@@ -21,12 +21,12 @@ import java.util.stream.Collectors;
 
 public class c5cbca7s {
 
-    private static final String PREFIX = "https://k6.c5cbca7s.com/pw/";
+    private static final String PREFIX = "https://d2303k.xyz/pw/";
 
 
     public static void main(String[] args) {
 
-        String url = "https://k6.c5cbca7s.com/pw/thread.php?fid=22&page=1";
+        String url = "https://d2303k.xyz/pw/thread.php?fid=22&page=1";
         List<String> detailUrl = null;
 
         detailUrl = TestDataSource.getData();

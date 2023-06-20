@@ -28,6 +28,7 @@ import java.util.Objects;
 
 
 @Controller
+@RequestMapping("/test")
 public class TestController {
 
     private static String SCRIPT_STR = "false";
@@ -43,7 +44,7 @@ public class TestController {
 
 
     @ResponseBody
-    @RequestMapping(value = "/version", method = RequestMethod.GET)
+    @RequestMapping(value = "version", method = RequestMethod.GET)
     public String version() {
         return  SCRIPT_STR;
     }
