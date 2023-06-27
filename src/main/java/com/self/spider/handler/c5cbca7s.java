@@ -4,6 +4,7 @@ package com.self.spider.handler;
 import com.alibaba.fastjson.JSONObject;
 import com.self.spider.constant.TestDataSource;
 import com.self.spider.entities.TitleDetail;
+import com.self.spider.servies.c5cbca7s.manager.CinfigManager;
 import com.self.spider.toolkits.GetToolKit;
 import org.apache.commons.lang3.StringUtils;
 import org.jsoup.Jsoup;
@@ -58,10 +59,13 @@ public class c5cbca7s {
                             map.put(kv[0],kv[1]);
                         }
                     });
+
+            String dowonUrl;
             TitleDetail detail = TitleDetail.builder()
                     .name(name.get())
                     .actor(ACTOR_NAME.apply(map))
-                    .dowonUrl(DOWONLOAD_URL.apply(map))
+                    .dowonUrl(dowonUrl = DOWONLOAD_URL.apply(map))
+                    .md5(String.format("magnet:?xt=urn:btih:%s",dowonUrl.substring(dowonUrl.indexOf("hash=")+5,dowonUrl.length())))
                     .mosaic(MOSAIC.apply(map))
                     .img(IMG.apply(map))
                     .build();
@@ -96,8 +100,9 @@ public class c5cbca7s {
 
     public static Function<Map<String,String>,String>  DOWONLOAD_URL = map ->  {
         AtomicReference<String> url = new AtomicReference<>("找不到下载地址");
+        String dowonLoadMark = CinfigManager.getInstons().getDowonLoadMark();
         map.forEach((k,v) ->{
-            if(k.contains("91dfjh")){
+            if(k.contains(dowonLoadMark)){
                 url.set(Jsoup.parse(k).getElementsByTag("a").attr("href"));
             }
         });

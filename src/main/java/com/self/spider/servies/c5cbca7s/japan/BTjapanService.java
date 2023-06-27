@@ -25,7 +25,7 @@ public class BTjapanService extends AbstractC5cbca7sService {
 
     @Override
     public String getTableUrl(){
-        return CinfigManager.getInstons().getPrefix() + "thread.php?fid=22";
+        return CinfigManager.getInstons().getPrefix() + "thread.php?fid=22&type=2";
     }
 
     @Override

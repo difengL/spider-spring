@@ -67,7 +67,10 @@ public class ListController {
         int offsetStar = pageNum%5==0?(pageNum/5-1)*5+1:(pageNum/5)*5+1;
         int offsetEnd = pageNum%5==0?((pageNum/5))*5:((pageNum/5+1))*5;
         PageInfo page = PageInfo.builder()
-                .list(mapper.queryAll(condition))
+                .list(mapper.queryAll(condition).stream().peek(item -> {
+                    item.setDowonUrl(item.getDowonUrl());
+
+                }).collect(Collectors.toList()))
                 .hasPrevious(pageNum>1?true:false)
                 .previousNum(pageNum-1)
                 .totalPages(totalPages)

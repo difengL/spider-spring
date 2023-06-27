@@ -42,7 +42,7 @@ class SpiderSpringApplicationTests {
 
     @Test
     void contextLoads() {
-        japanService.spiderData(9,6);
+        japanService.spiderData(1,1);
 
         //System.out.println(JSONObject.toJSONString(titleList("http://z11.ef7d6a2b557.rocks/pw/thread.php?fid=18&page=1")));
 

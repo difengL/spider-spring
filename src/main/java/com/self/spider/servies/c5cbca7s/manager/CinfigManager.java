@@ -20,7 +20,7 @@ public class CinfigManager {
 
     public String getPrefix() {
         if(StringUtils.isBlank(prefix)){
-            prefix = "http://z11.ef7d6a2b557.rocks/pw/";
+            prefix = "http://d2303k.xyz/pw/";
         }
         return prefix;
     }
@@ -38,7 +38,7 @@ public class CinfigManager {
 
     public String getDowonLoadMark() {
         if(StringUtils.isBlank(dowonLoadMark)){
-            dowonLoadMark = "91dfgh";
+            dowonLoadMark = "hash=";
         }
         return dowonLoadMark;
     }

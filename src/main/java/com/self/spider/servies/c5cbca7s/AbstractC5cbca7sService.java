@@ -131,10 +131,12 @@ public abstract class AbstractC5cbca7sService {
                 if (actor.endsWith("[") || actor.endsWith("【")) {
                     actor = actor.substring(0, actor.length() - 1);
                 }
+                String dowonUrl;
                 TitleDetail detail = TitleDetail.builder()
                         .name(ZhConverterUtil.convertToSimple(element.getTitle().trim()))
                         .actor(ZhConverterUtil.convertToSimple(actor.trim()))
-                        .dowonUrl(c5cbca7s.DOWONLOAD_URL.apply(map).trim())
+                        .dowonUrl(dowonUrl = c5cbca7s.DOWONLOAD_URL.apply(map).trim())
+                        .md5(String.format("magnet:?xt=urn:btih:%s",dowonUrl.substring(dowonUrl.indexOf("hash=") + 5,dowonUrl.length())))
                         .mosaic(c5cbca7s.MOSAIC.apply(map).trim())
                         .img(c5cbca7s.IMG.apply(map).trim())
                         .build();
