@@ -5,6 +5,7 @@ import com.self.spider.constant.TestDataSource;
 import com.self.spider.entities.TitleDetail;
 import com.self.spider.entities.business.Catalogue;
 import com.self.spider.handler.c5cbca7s;
+import com.self.spider.servies.avman.mosaic.JapanMosaicService;
 import com.self.spider.servies.c5cbca7s.china.BTchinaService;
 import com.self.spider.servies.c5cbca7s.japan.BTjapanService;
 import com.self.spider.servies.c5cbca7s.limit.LimitLevelService;
@@ -40,9 +41,20 @@ class SpiderSpringApplicationTests {
     @Resource
     private LimitLevelService limitService;
 
+    //man
+    @Resource
+    private JapanMosaicService mosaicService;
+
+
     @Test
     void contextLoads() {
-        japanService.spiderData(1,1);
+        //38  从39开始
+        //japanService.spiderData(28,11);
+
+
+        //man
+        mosaicService.spiderData(1,100);
+
 
         //System.out.println(JSONObject.toJSONString(titleList("http://z11.ef7d6a2b557.rocks/pw/thread.php?fid=18&page=1")));
 

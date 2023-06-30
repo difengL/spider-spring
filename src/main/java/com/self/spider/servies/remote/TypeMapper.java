@@ -17,4 +17,7 @@ public interface TypeMapper {
     List<AvType> queryAllGroupType();
 
     void addType(AvType avtYPE);
+
+
+
 }
